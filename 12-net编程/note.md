@@ -154,12 +154,12 @@
             - mail["From"] 表示发送着信息，包括姓名和邮件
             - mail["To"]  表示接收者信息，包括姓名和邮件地址
             - mail["Subject"] 表示摘要或者主题信息
-            - 案例v10
+            - 案例 10
         - 同时支持html和text格式
             - 构建一个MIMEMultipart格式邮件
             - MIMEMultipart的subtype设置成alternative格式
             - 添加HTML和text邮件
-            - 案例v11
+            - 案例 11
         
         - 使用smtplib模块发送邮件
     
@@ -174,6 +174,6 @@
                 4. 根据相应序号，得到某一封信的数据流
                 5. 利用解析函数进行解析出相应的邮件结构体
             2. 用email解析邮件的具体内容
-        - 案例v12
+        - 案例 12
 
     
