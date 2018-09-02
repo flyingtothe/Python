@@ -1,3 +1,70 @@
+# TKINTER
+- Tkinter 是 Python 的标准 GUI 库
+- 注意：Python3.x 版本使用的库名为 tkinter,即首写字母 T 为小写。
+    - 创建案例 01
+- 组件
+  - Button
+        - 按钮组件用于在程序中添加按钮，按钮上可以放上文本或图像，按钮可用于监听用户行为，能与 Python 函数关联，当按钮被按下时，自动调用该函数
+        - 语法：w = Button ( master, option=value, ... )
+        - 参数：master: 按钮的父容器     options: 可选项，即该按钮的可设置的属性。这些选项可以用键 = 值的形式设置，并以逗号分隔。
+        - 可选项：
+            - activebackground  当鼠标放上去时，按钮的背景色
+            - activeforeground  当鼠标放上去时，按钮的前景色
+            - bd                按钮边框的大小，默认为 2 个像素
+            - bg                按钮的背景色
+            - command           按钮关联的函数，当按钮被点击时，执行该函数
+            - fg                按钮的前景色（按钮文本的颜色）
+            - font              文本字体
+            - height            按钮的高度
+            - highlightcolor    要高亮的颜色
+            - image             按钮上要显示的图片
+            - justify           显示多行文本的时候,设置不同行之间的对齐方式，可选项包括LEFT, RIGHT, CENTER
+            - padx              按钮在x轴方向上的内边距(padding)，是指按钮的内容与按钮边缘的距离
+            - pady              按钮在y轴方向上的内边距(padding)
+            - relief            边框样式，设置控件3D效果，可选的有：FLAT、SUNKEN、RAISED、GROOVE、RIDGE。默认为 FLAT。
+            - state             设置按钮组件状态,可选的有NORMAL、ACTIVE、 DISABLED。默认 NORMAL。
+            - underline         下划线。默认按钮上的文本都不带下划线。取值就是带下划线的字符串索引，为 0 时，第一个字符带下划线，为 1 时，前两个字符带下划线，以此类推
+            - width             按钮的宽度，如未设置此项，其大小以适应按钮的内容（文本或图片的大小）
+            - wraplength        限制按钮每行显示的字符的数量
+            - text              按钮的文本内容
+            - anchor            锚选项，控制文本的位置，默认为中心
+        - 组件方法
+            - deselect() 	清除单选按钮的状态
+            - flash() 	    在激活状态颜色和正常颜色之间闪烁几次单选按钮，但保持它开始时的状态。
+            - invoke() 	    可以调用此方法来获得与用户单击单选按钮以更改其状态时发生的操作相同的操作
+            - select() 	    设置单选按钮为选中。
+  
+  - Canvas	        画布控件；显示图形元素如线条或文本
+  - Checkbutton	    多选框控件；用于在程序中提供多项选择框
+  - Entry	        输入控件；用于显示简单的文本内容
+  - Frame	        框架控件；在屏幕上显示一个矩形区域，多用来作为容器
+  - Label	        标签控件；可以显示文本和位图
+  - Listbox	        列表框控件；在Listbox窗口小部件是用来显示一个字符串列表给用户
+  - Menubutton	    菜单按钮控件，由于显示菜单项。
+  - Menu	        菜单控件；显示菜单栏,下拉菜单和弹出菜单
+  - Message	        消息控件；用来显示多行文本，与label比较类似
+  - Radiobutton	    单选按钮控件；显示一个单选的按钮状态
+  - Scale	        范围控件；显示一个数值刻度，为输出限定范围的数字区间
+  - Scrollbar	    滚动条控件，当内容超过可视化区域时使用，如列表框。.
+  - Text	        文本控件；用于显示多行文本
+  - Toplevel	    容器控件；用来提供一个单独的对话框，和Frame比较类似
+  - Spinbox	        输入控件；与Entry类似，但是可以指定输入范围值
+  - PanedWindow	    PanedWindow是一个窗口布局管理的插件，可以包含一个或者多个子控件。
+  - LabelFrame	    labelframe 是一个简单的容器控件。常用与复杂的窗口布局。
+  - messagebox	    用于显示你应用程序的消息框。
+
 # GUI介绍
 - GraphicalUserInterface
+- GUI for Python: Tinter, wxpython, PyQt
+- TKinter:
+    - 绑定的是 TK GUI 工具集，用来包装 python 的 tcl 代码
+- PyGTK
+    - TKinter 的替代品
+- wxPython
+    - 跨平台的 python GUI
+- PyQt
+    - 跨平台的
+    - 需要商业授权
+- Jython
+    - 程序可以和 Java 无缝集成
     
