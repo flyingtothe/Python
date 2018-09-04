@@ -8,7 +8,7 @@
 # 实例
 from tkinter import *  # 导入 Tkinter 库
 
-root = Tk()  # 创建窗口对象的背景色
+root = Tk()  # 创建窗口对象
 # 创建两个列表
 li = ['C', 'python', 'php', 'html', 'SQL', 'java']
 movie = ['CSS', 'jQuery', 'Bootstrap']
