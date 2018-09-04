@@ -33,7 +33,7 @@
             - flash() 	    在激活状态颜色和正常颜色之间闪烁几次单选按钮，但保持它开始时的状态。
             - invoke() 	    可以调用此方法来获得与用户单击单选按钮以更改其状态时发生的操作相同的操作
             - select() 	    设置单选按钮为选中。
-    - 案例 02
+        - 案例 02
   
     - Canvas	        画布控件；显示图形元素如线条或文本
         - 语法下：w = Canvas ( master, option=value, ... )
@@ -51,7 +51,8 @@
             - xscrollcommand    水平滚动条，如果画布是可滚动的，则该属性是水平滚动条的 .set（）方法。
             - yscrollincrement  类似 xscrollincrement, 但是垂直方向。
             - yscrollcommand    垂直滚动条，如果画布是可滚动的，则该属性是垂直滚动条的 .set（）方法。
-    - 案例 03
+    
+        - 案例 03
     
     - Checkbutton	    多选框控件；用于在程序中提供多项选择框
         - 语法：w = Checkbutton ( master, option=value, ... )
@@ -85,32 +86,55 @@
             - wraplength            是否设置包裹。
         
         - 组件方法
-            - deselect() 	清除单选按钮的状态
+            - deselect() 	清除复选框选中选项
             - flash() 	    在激活状态颜色和正常颜色之间闪烁几次单选按钮，但保持它开始时的状态。
             - invoke() 	    可以调用此方法来获得与用户单击单选按钮以更改其状态时发生的操作相同的操作
             - select() 	    设置单选按钮为选中
             - toflle()     选中与没有选中的选项互相切换
+        
         - 案例 04
     
     - Entry	        输入控件；用于显示简单的文本内容
-        - bg                输入框背景颜色
-        - bd                边框的大小，默认为 2 个像素
-        - cursor            光标的形状设定，如arrow, circle, cross, plus 等
-        - font              文本字体
-        - exportselection   默认情况下，你如果在输入框中选中文本，默认会复制到粘贴板，如果要忽略这个功能刻工艺设置 exportselection=0。
-        - fg                文字颜色。值为颜色或为颜色代码，如：'red','#ff0000'
-        - highlightcolor    文本框高亮边框颜色，当文本框获取焦点时显示
-        - justify           显示多行文本的时候,设置不同行之间的对齐方式，可选项包括LEFT, RIGHT, CENTER
-        - relief            边框样式，设置控件3D效果，可选的有：FLAT、SUNKEN、RAISED、GROOVE、RIDGE。默认为 FLAT。
-        - selectbackground  选中文字的背景颜色
-        - selectborderwidth 选中文字的背景边框宽度
-        - selectforeground  选中文字的颜色
-        - show              指定文本框内容显示为字符，值随意，满足字符即可。如密码可以将值设为 show="*"
-        - state             默认为 state=NORMAL, 文框状态，分为只读和可写，值为：normal/disabled
-        - textvariable      文本框的值，是一个StringVar()对象
-        - width             文本框宽度
-        - xscrollcommand    设置水平方向滚动条，一般在用户输入的文本框内容宽度大于文本框显示的宽度时使用。
+        - 语法：w = Entry( master, option, ... )
+        - 可选项
+            - bg                输入框背景颜色
+            - bd                边框的大小，默认为 2 个像素
+            - cursor            光标的形状设定，如arrow, circle, cross, plus 等
+            - font              文本字体
+            - exportselection   默认情况下，你如果在输入框中选中文本，默认会复制到粘贴板，如果要忽略这个功能刻工艺设置 exportselection=0。
+            - fg                文字颜色。值为颜色或为颜色代码，如：'red','#ff0000'
+            - highlightcolor    文本框高亮边框颜色，当文本框获取焦点时显示
+            - justify           显示多行文本的时候,设置不同行之间的对齐方式，可选项包括LEFT, RIGHT, CENTER
+            - relief            边框样式，设置控件3D效果，可选的有：FLAT、SUNKEN、RAISED、GROOVE、RIDGE。默认为 FLAT。
+            - selectbackground  选中文字的背景颜色
+            - selectborderwidth 选中文字的背景边框宽度
+            - selectforeground  选中文字的颜色
+            - show              指定文本框内容显示为字符，值随意，满足字符即可。如密码可以将值设为 show="*"
+            - state             默认为 state=NORMAL, 文框状态，分为只读和可写，值为：normal/disabled
+            - textvariable      文本框的值，是一个StringVar()对象
+            - width             文本框宽度
+            - xscrollcommand    设置水平方向滚动条，一般在用户输入的文本框内容宽度大于文本框显示的宽度时使用。
         
+        - 组件方法
+            - delete ( first, last=None )   删除文本框里直接位置值
+
+                    text.delete(10)      # 删除索引值为10的值
+                    text.delete(10, 20)  # 删除索引值从10到20之前的值
+                    text.insert(0, END)  # 删除所有值
+            
+            - get()                         获取文件框的值
+            - icursor ( index )             将光标移动到指定索引位置，只有当文框获取焦点后成立
+            - index ( index )               返回指定的索引值
+            - insert ( index, s )           向文本框中插入值，index：插入位置，s：插入值
+            - select_adjust ( index )       选中指定索引和光标所在位置之前的值
+            - select_clear()                清空文本框
+            - select_from ( index )         设置光标的位置，通过索引值 index 来设置
+            - select_present()              如果有选中，返回 true，否则返回 false。
+            - select_range ( start, end )   选中指定索引位置的值，start(包含) 为开始位置，end(不包含) 为结束位置start必须比end小
+            - select_to ( index )           选中指定索引与光标之间的值
+            - xview ( index )               该方法在文本框链接到水平滚动条上很有用。
+            - xview_scroll ( number, what ) 用于水平滚动文本框。 what 参数可以是 UNITS, 按字符宽度滚动，或者可以是 PAGES, 按文本框组件块滚动。 number 参数，正数为由左到右滚动，负数为由右到左滚动。
+        - 案例 p05
         
     - Frame	        框架控件；在屏幕上显示一个矩形区域，多用来作为容器
     - Label	        标签控件；可以显示文本和位图
