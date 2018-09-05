@@ -1,61 +1,118 @@
-#Checkbutton又称为多选按钮，可以表示两种状态：On和Off，可以设置回调函数，每当点击此按钮时回调函数被调用
-'''1.一个简单的Checkbutton例子'''
-#创建一个Checkbutton,显示文本为"python"
+# Radiobutton为单选按钮，即在同一组内只能有一个按钮被选中，每当选中组内的一个按钮时，
+# 其它的按钮自动改为非选中态，与其他控件不同的是：它有组的概念
+'''1.创建一个简单的Radiobutton'''
 from tkinter import *
-root = Tk()
-Checkbutton(root,text = 'python').pack()
-root.mainloop()
-
-'''2.设置Checkbutton的回调函数'''
-from tkinter import *
-def callCheckbutton():
-    print ('you check this button')
-root = Tk()
-Checkbutton(root,text = 'check python',command = callCheckbutton).pack()
-root.mainloop()
-#不管Checkbutton的状态如何，此回调函数都会被调用
-
-'''3.通过回调函数改变Checkbutton的显示文本text的值'''
-from tkinter import *
-def callCheckbutton():
-    #改变v的值，即改变Checkbutton的显示值
-    v.set('check Tkinter')
 
 root = Tk()
-v = StringVar()
-v.set('check python')
-#绑定v到Checkbutton的属性textvariable
-Checkbutton(root,text = 'check python',textvariable = v,command = callCheckbutton).pack()
+Radiobutton(root, text='python').pack()
+Radiobutton(root, text='tkinter').pack()
+Radiobutton(root, text='widget').pack()
 
-root.mainloop()
-
-'''4.上述的textvariable使用方法与Button的用法完全相同，使用此例是为了区别Checkbutton的另外的一个属性variable,此属性与textvariable不同，它是与这个控件本身绑定，Checkbutton自己有值：On和Off值，缺省状态On为1，Off为0，如：'''
-#显示Checkbutton的值
-from tkinter import *
-root = Tk()
-#将一整数与Checkbutton的值绑定，每次点击Checkbutton，将打印出当前的值
+'''2.创建一个Radiobutton组，使用绑定变量来设置选中哦的按钮'''
+# 创建一个Radiobutton组，创建三个Radiobutton，并绑定到整型变量v
+# 选中value=1的按钮
 v = IntVar()
-def callCheckbutton():
-    print (v.get())
-Checkbutton(root,
-            variable = v,
-            text = 'checkbutton value',
-            command = callCheckbutton).pack()
-root.mainloop()
+v.set(1)
+for i in range(3):
+    Radiobutton(root, variable=v, text='python' + str(i), value=i).pack()
 
-'''5.Checkbutton的值不仅仅是1或0，可以是其他类型的数值，可以通过onvalue和offvalue属性设置Checkbutton的状态值，如下代码将On设置为'python',Off值设置为'Tkinter'，程序的打印值将不再是0或1，而是'Tkinter’或‘python’'''
+'''3.创建两个不同的组'''
+vLang = IntVar()
+vOS = IntVar()
+vLang.set(1)
+vOS.set(2)
+for v in [vLang, vOS]:  # 创建两个组
+    for i in range(3):  # 每个组含有3个按钮
+        Radiobutton(root,
+                    variable=v,
+                    value=i,
+                    text='python_' + str(v) + '_' + str(i)
+                    ).pack()
+root.mainloop()
+# 不指定绑定变量，每个Radiobutton自成一组
+
+
+'''4.如果同一个组中的按钮使用相同的alue，则这两个按钮的工作方式完全相同'''
+# -*- coding: utf-8 -*-
 from tkinter import *
-root = Tk()
-#将一字符串与Checkbutton的值绑定，每次点击Checkbutton，将打印出当前的值
-v = StringVar()
-def callCheckbutton():
-    print (v.get())
-Checkbutton(root,
-            variable = v,
-            text = 'checkbutton value',
-            onvalue = 'python',        #设置On的值
-            offvalue = 'tkinter',    #设置Off的值
-            command = callCheckbutton).pack()
-root.mainloop()
 
-# 6.还有其他的属性fg/bg/relief/width/height/justify/state使用方法与Button相同，不再举例。
+root = Tk()
+v = IntVar()
+v.set(1)
+for i in range(3):
+    Radiobutton(root,
+                variable=v,
+                value=1,
+                text='python_1_' + str(i)
+                ).pack()
+for i in range(3):
+    Radiobutton(root,
+                variable=v,
+                value=i,
+                text='python_2_' + str(2 + i)
+                ).pack()
+root.mainloop()
+# 上述的例子中共有4个alue为1的值，当选中其中的一个时，其他三个也会被选中；选中除了这四个只外的按钮时，四个按钮全部取消
+
+
+'''5.与Checkbutton类似，每个Radiobutton可以有自己的处理函数，每当点击按钮时，系统会调用相应的处理函数'''
+# -*- coding: utf-8 -*-
+from tkinter import *
+
+root = Tk()
+v = IntVar()
+v.set(0)
+
+
+def r1():
+    print('call r1')
+
+
+def r2():
+    print('call r2')
+
+
+def r3():
+    print('call r3')
+
+
+def r4():
+    print('call r4')
+
+
+i = 0
+# 创建8个按钮，其中两个两个的value值相同
+for r in [r1, r2, r3, r4]:
+    Radiobutton(root,
+                variable=v,
+                text='radio button',
+                value=i,
+                command=r
+                ).pack()
+    Radiobutton(root,
+                variable=v,
+                text='radio button',
+                value=i,
+                command=r
+                ).pack()
+    i += 1
+
+root.mainloop()
+# 注意虽然同时可以选中两个按钮，但每次点击按钮，执行的代码只有一次
+
+
+'''6.Radiobutton另一个比较实用的属性是indicatoron,缺省情况下为1，如果将这个属性改为0，则其外观是Sunken'''
+from tkinter import *
+
+root = Tk()
+v = IntVar()
+v.set(1)
+for i in range(3):
+    Radiobutton(root,
+                variable=v,
+                indicatoron=0,
+                text='python & tkinter',
+                value=i
+                ).pack()
+root.mainloop()
+# Radiobutton表示按钮的弹起或按下两种状态

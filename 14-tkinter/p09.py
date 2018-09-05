@@ -1,48 +1,35 @@
-'''这是一个过时了的控件，从Tk8.0开始将不再使用这个控件，取而代之的是Menu,这里介绍它是为了
-兼容以前版本的Tk，能够知道有这个东东就可以了'''
-'''1.介绍一下Menubutton的常用 方法，可以看到与Menu的使用方法基本相同。'''
+# Message也是用来显示文本的，用法与Label基本一样
+'''1.创建一个简单的Message'''
+from tkinter import *
+
+root = Tk()
+# 运行程序，可以看到Hello之后，Message显示在它的下一行，这也是Message的一个特性。Label没有。
+Message(root, text='hello Message').pack()
+
+'''2.如果不让它换行的话，指定足够大的宽度'''
+Message(root, text='hello Message', width=100).pack()
+
+'''3.使用aspect属性指定宽高比例'''
+for i in range(10):
+    Message(root, text='A' * i, aspect=400).pack()
+root.mainloop()
+
+'''4Message绑定变量'''
 # -*- coding: utf-8 -*-
 from tkinter import *
 
 root = Tk()
-mbLang = Menubutton(root, text='Language')
+v = StringVar()
+v.set('000')
+for i in range(10):
+    Message(root, text='A', textvariable=v).pack()
+# 打印当前的v值，只要是其中的一个Message的值发生变化，则此v值就会改变。
+# 绑定变量v，虽然创建Message时使用了text来指定Message的值，绑定的变量优先级高，可以改变text指定的值。
+print(v.get())
 
-mbLang.menu = Menu(mbLang)
-# 生成菜单项
-for item in ['Python', 'PHP', 'CPP', 'C', 'Java', 'JavaScript', 'VBScript']:
-    mbLang.menu.add_command(label=item)
-mbLang['menu'] = mbLang.menu
-mbLang.pack(side=LEFT)
-# 分隔符将相关的菜单项进行分组，只是UI上的实现，程序上没有任何改变，它也不执行任何的命令
-
-# 添加向菜单中添加checkbutton项
-mbOS = Menubutton(root, text='OS')
-mbOS.menu = Menu(mbOS)
-for item in ['Unix', 'Linux', 'Soloris', 'Windows']:
-    mbOS.menu.add_checkbutton(label=item)
-mbOS['menu'] = mbOS.menu
-mbOS.pack(side=LEFT)
-
-# 向菜单中添加radiobutton项
-mbLinux = Menubutton(root, text='Linux')
-mbLinux.menu = Menu(mbLinux)
-for item in ['Redhat', 'Fedra', 'Suse', 'ubuntu', 'Debian']:
-    mbLinux.menu.add_radiobutton(label=item)
-mbLinux['menu'] = mbLinux.menu
-mbLinux.pack(side=LEFT)
-
-# 对菜单项进行操作
-# 向Language菜单中添加一项"Ruby",以分隔符分开
-mbLang.menu.add_separator()
-mbLang.menu.add_command(label='Ruby')
-
-# 向OS菜单中第二项添加"FreeBSD",以分隔符分开
-mbOS.menu.insert_separator(2)
-mbOS.menu.insert_checkbutton(3, label='FreeBSD')
-mbOS.menu.insert_separator(4)
-
-# 将Linux中的“Debian”删除
-mbLinux.menu.delete(5)
-
+'''5.测试一下justify属性'''
+for i in [LEFT, RIGHT, CENTER]:
+    Message(root, text='ABC DEF GHI', justify=i).pack()
+# 显示的文本自动断行，上下行分别使用了左对齐，右对齐和居中对齐
 root.mainloop()
-# 这个控件已经不提倡使用，取而代之的是Menu，使用这个比使用Menubutton更为方便。如果不是特别需要不要使用这个控件。
+root.mainloop()

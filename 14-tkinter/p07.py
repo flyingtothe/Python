@@ -1,205 +1,481 @@
-'''1.Label的第一个例子
-text属性使用方法
-'''
-# 要使用Tk模块，除非你不想使用这个模块，那整个教程就不需要看了
+'''1.创建第一个Text'''
 from tkinter import *
-# 初始化Tk
+
 root = Tk()
-# 创建一个label，使用编码，到现在为止还没有使用过直接通过“drag-and-drop”就可以完成的IDE。
-label = Label(root,text = 'Hello Tkinter')
-# 显示label，必须含有此语句
-label.pack()
-# root.pack()
-# 但root是不需要（严格地说是必须不这样使用），否则解释器抱怨
-# 进入消息循环
+t = Text(root)
+'''2.向Text中添加文本'''
+# 向第一行,第一列添加文本0123456789
+t.insert(1.0, '0123456789')
+# 向第一行第一列添加文本ABCDEFGHIJ
+t.insert(1.0, 'ABCDEFGHIJ')
+t.pack()
 root.mainloop()
-# 控件的显示步骤：
-# 1.创建这个控件
-# 2.指定这个空间的master，即这个控件属于哪一个
-# 3.告诉GM(geometry manager)有一个控件产生了
-'''
-还有更简单的一个例子：将‘Hello Tkinter’打印到标题上，Label也不用创建了
-from Tkinter import *
-root = Tk()
-root.title('hello Tkinter')
-root.mainloop()
-再没法儿简化了，就这样吧
-'''
-'''2.在label上使用内置位图
-bitmap的使用方法
-'''
+# root中含有一Text控件,可以在这个控件内输入文本,可以使用Ctrl+C/V向Text内添加剪切板上的内容(文本),不接受Ctrl+Z执行操作
+
+
+'''3.使用line.col索引添加内容'''
+# 使用indexes来添加Text的内容
+# -*- coding: utf-8 -*-
 from tkinter import *
-# 初始化Tk
+
 root = Tk()
-# 创建一个label，使用编码，到现在为止还没有使用过直接通过“drag-and-drop”就可以完成的IDE。
-label = Label(root,bitmap = 'error')
-# 上面的代码使用了内置位图error
-
-# 显示label，必须含有此语句
-label.pack()
-
-# 进入消息循环
+t = Text(root)
+# 向第一行,第一列添加文本0123456789
+t.insert(1.0, '0123456789')
+t.insert(1.0, ' ')
+# 向第一行第一列添加文本ABCDEFGHIJ
+t.insert(1.0, 'ABCDEFGHIJ')
+t.pack()
 root.mainloop()
-'''
-其他可用的位图：
-    * error
-    * hourglass
-    * info
-    * questhead
-    * question
-    * warning
-    * gray12 
-    * gray25 
-    * gray50
-    * gray75
-若要查看各自的效果，可以使用相应的名称将bitmpa = 'error'替换。
-据说还可以使用自己指定的位图文件,网上找了一下，格式如下：
-    Label(root, bitmap="@/path/bitmapname")
-不过我试了一下，从来没有成功过，我已经将位图该为单色的了:(
+# 可以看到使用indexes时，如果其值超过了Text的buffer值，程序不会抛出异常，它会使用向给定值靠近。
 
-另：还有的网上的文章说明如何使用PhotoImage和BitmapImage显示bmp或gif文件，提到一点
-防止图像文件被python自动回收(garbage collected)，应将bmp或gif放到全局(global)或实体
-(instance)中，使用如下两种方法，仍未奏效：
-'''
-# 使用image属性
-#    bm = PhotoImage(file = 'c:/python.gif')
-#    label = Label(root,image = bm)
-#    label.bm = bm
-# 错误信息：
-# TclError: image "pyimageXX" doesn't exist
-# 使用bitmap属性
-#    bm = BitmapImage(file='c:/python2.bmp')
-#    label = Label(root,bitmap=bm)
-#    label.bm = bm
-#    label.pack()
-# 错误信息：
-# TclError: format error in bitmap data
-'''
-虽然二者均没有起作用，还是要说明一下，bitmap与image的关系，如果同时指定这两参数，image
-优先。
-'''
-'''3.改变控件的前景色和背景色
-fg:前景色
-bg:背景色
-设置背景色的一个大的用处是：可以判断控件的大小（不同的控件使用不同的颜色，后续内容
-可以使用此特性来调试container）
-'''
+
+'''mark是用来表示在Text中位置的一类符号'''
+'''4.使用内置的mark控制添加位置'''
+# 演示了内置的mark:INSERT/CURRENT/END/SEL_FIRST/SEL_LAST的用法
+# -*- coding: utf-8 -*-
 from tkinter import *
+
 root = Tk()
-#在创建Label时指定各自使用的颜色
-'''可以使用的颜色值：'''
-#使用颜色名称
-Label(root,fg = 'red',bg = 'blue',text = 'Hello I am Tkinter').pack()
-#使用颜色值#RRGGBB
-Label(root,fg = 'red',bg = '#FF00FF',text = 'Hello I am Tkinter').pack()
-#使用系统相关的颜色值（Windows），不建议使用这样的值，不利于平台移植
-Label(root,fg = 'red',bg = 'SystemButtonShadow',text = 'Hello I am Tkinter').pack()
+t = Text(root)
+# 向Text中添加10行文本
+for i in range(1, 10):
+    t.insert(1.0, '0123456789 ')
+
+
+# 定义各个Button的回调函数，这些函数使用了内置的mark:INSERT/CURRENT/END/SEL_FIRST/SEL_LAST
+def insertText():
+    t.insert(INSERT, 'jcodeer')
+
+
+def currentText():
+    t.insert(CURRENT, 'jcodeer')
+
+
+def endText():
+    t.insert(END, 'jcodeer')
+
+
+def selFirstText():
+    t.insert(SEL_FIRST, 'jcodeer')
+
+
+def selLastText():
+    t.insert(SEL_LAST, 'jcodeer')
+
+
+# INSERT
+Button(root,
+       text='insert jcodeer at INSERT',
+       command=insertText
+       ).pack(fill=X)
+# CURRENT
+Button(root,
+       text='insert jcodeer at CURRENT',
+       command=insertText
+       ).pack(fill=X)
+# END
+Button(root,
+       text='insert jcodeer at END',
+       command=endText
+       ).pack(fill=X)
+# SEL_FIRST
+Button(root,
+       text='insert jcodeer at SEL_FIRST',
+       command=selFirstText
+       ).pack(fill=X)
+# SEL_LAST
+Button(root,
+       text='insert jcodeer at SEL_LAST',
+       command=selLastText
+       ).pack(fill=X)
+
+t.pack()
 root.mainloop()
+# 几个内置的mark：
+# INSERT:光标的插入点
+# CURRENT:鼠标的当前位置所对应的字符位置
+# END:这个Text buffer的最后一个字符
+# SEL_FIRST:选中文本域的第一个字符，如果没有选中区域则会引发异常
+# SEL_LAST：选中文本域的最后一个字符，如果没有选中区域则会引发 异常
+
+
+'''5.使用表达式来增强mark'''
+# 表达式(expression)可以个性任何的Indexes，如下：
 '''
-(1).使用颜色名称
-Red
-Green
-Blue
-Yellow
-LightBlue
-......
-(2).使用#RRGGBB
-label = Label(root,fg = 'red',bg = '#FF00FF',text = 'Hello I am Tkinter')
-指定背景色为绯红色
-(3).除此之外，Tk还支持与OS相关的颜色值，如Windows支持
-SystemActiveBorder, 
-SystemActiveCaption, 
-SystemAppWorkspace, 
-SystemBackground,
-......
++ count chars :前移count字符
+- count chars :后移count字符
++ count lines :前移count行
+- count lines :后移count行
+linestart:移动到行的开始
+linesend:移动到行的结束
+wordstart:移动到字的开始
+wordend:移动到字的结束
 '''
-'''4.设置宽度与高度
-width:    宽度
-height:    高度
-'''
+# 演示修饰符表达式的使用方法，如何与当前可用的indexes一起使用
+# -*- coding: utf-8 -*-
 from tkinter import *
-root = Tk()
-# 创建三个Label，分别显示red,blue,yellow
-# 注意三个Label的大小，它们均与文本的长度有关
-Label(root,text = 'red',bg = 'red').pack()
-Label(root,text = 'blue',bg = 'blue').pack()
-Label(root,text = 'yellow',bg = 'yellow').pack()
 
-# 再创建三个Label，与上次不同的是这三个Label均使用width和heigth属性
-# 三个Label的大小由width和height指定
-Label(root,bg = 'red',width = 10,height = 3).pack()
-Label(root,bg = 'blue',width = 10,height = 3).pack()
-Label(root,bg = 'yellow',width = 10,height = 3).pack()
+root = Tk()
+t = Text()
+# 向第一行,第一列添加文本0123456789
+for i in range(1, 10):
+    t.insert(1.0, '0123456789 ')
+a = 'test_mark'
+
+
+def forwardChars():
+    # 直接连接字符串
+    # t.mark_set(a,CURRENT + '+ 5 chars')
+    t.mark_set(a, CURRENT + '+5c')
+
+
+def backwardChars():
+    # t.mark_set(a,CURRENT + '- 5 chars')
+    t.mark_set(a, CURRENT + '-5c')
+
+
+def forwardLines():
+    # t.mark_set(a,CURRENT + '+ 5 lines)
+    t.mark_set(a, CURRENT + '+5l')
+
+
+def backwardLines():
+    # t.mark_set(a,CURRENT + '- 5 lines)
+    t.mark_set(a, CURRENT + '-5l')
+
+
+def lineStart():
+    # 注意linestart前面的那个空格不可省略
+    t.mark_set(a, CURRENT + ' linestart')
+
+
+def lineEnd():
+    # 注意lineend前面的那个空格不可省略
+    t.mark_set(a, CURRENT + ' lineend')
+
+
+def wordStart():
+    # 移动到当前字的开始。
+    t.mark_set(a, CURRENT + ' wordstart')
+
+
+def wordend():
+    # 移动到当前字的结束
+    t.mark_set(a, CURRENT + ' wordend')
+
+
+# mark:test_mark默认值为CURRENT
+t.mark_set(a, CURRENT)
+Button(root, text='forward 5 chars', command=forwardChars).pack(fill=X)
+Button(root, text='backward 5 chars', command=backwardChars).pack(fill=X)
+Button(root, text='forward 5 lines', command=forwardLines).pack(fill=X)
+Button(root, text='backward 5 lines', command=backwardLines).pack(fill=X)
+Button(root, text='line start', command=lineStart).pack(fill=X)
+Button(root, text='line end', command=lineEnd).pack(fill=X)
+Button(root, text='word start', command=lineEnd).pack(fill=X)
+Button(root, text='word end', command=lineEnd).pack(fill=X)
+
+
+# 测试三个位置的不同，CURRENT可以得知是当前光标的位置；mark就表示mark的位置了,INSERT好像一植都在1.0处没有改变。
+def insertText():
+    t.insert(INSERT, 'insert')
+
+
+def currentText():
+    t.insert(CURRENT, 'current')
+
+
+def markText():
+    t.insert(a, 'mark')
+
+
+Button(root, text='insert jcodeer.cublog.cn', command=insertText).pack(fill=X)
+Button(root, text='current jcodeer.cublog.cn', command=currentText).pack(fill=X)
+Button(root, text='mark jcodeer.cublog.cn', command=markText).pack(fill=X)
+t.pack()
 root.mainloop()
-'''5.同时使用图像与文本
-compound:    指定文本(text)与图像(bitmap/image)是如何在Label上显示，缺省为None，
-当指定image/bitmap时，文本(text)将被覆盖，只显示图像了。可以使用的值：
-    left：    图像居左
-    right:    图像居右
-    top：    图像居上
-    bottom：图像居下
-    center：文字覆盖在图像上
-bitmap/image:
-    显示在Label上的图像
-text:
-    显示在Label上的文本
-label = Label(root,text = 'Error',compound = 'left',bitmap = 'error')
-'''
+
+'''Tkinter教程之Text(2)篇'''
+'''6.使用tag来指定文本的属性'''
+# 创建一个指定背景颜色的TAG
+# -*- coding: utf-8 -*-
 from tkinter import *
+
 root = Tk()
-# 演示compound的使用方法
-# 图像与文本在Label中的位置
-# 图像居下
-Label(root,text = 'botton',compound = 'bottom',bitmap = 'error').pack()
-# 图像居上
-Label(root,text = 'top',compound = 'top',bitmap = 'error').pack()
-# 图像居右
-Label(root,text = 'right',compound = 'right',bitmap = 'error').pack()
-# 图像居左
-Label(root,text = 'left',compound = 'left',bitmap = 'error').pack()
-# 文字覆盖在图像上
-Label(root,text = 'center',compound = 'center',bitmap = 'error').pack()
-
-# 消息循环
+t = Text(root)
+# 创建一个TAG，其前景色为红色
+t.tag_config('a', foreground='red')
+# 使用TAG 'a'来指定文本属性
+t.insert(1.0, '0123456789', 'a')
+t.pack()
 root.mainloop()
+# 结果是文本颜色改变为红色了
 
-'''6.文本的多行显示
-在Tk004中，使用width和heigth来指定控件的大小，如果指定的大小无法满足文本的要求是，会出现
-什么现象呢？如下代码：
-    Label(root,bg = 'welcome to jcodeer.cublog.cn',width = 10,height = 3).pack()
-运行程序，超出Label的那部分文本被截断了，常用的方法是：使用自动换行功能，及当文本长度大于
-控件的宽度时，文本应该换到下一行显示，Tk不会自动处理，但提供了属性：
-wraplength：    指定多少单位后开始换行
-justify:        指定多行的对齐方式
-ahchor：        指定文本(text)或图像(bitmap/image)在Label中的显示位置
-可用的值：
-e
-w
-n
-s
-ne
-se
-sw
-sn
-center
-布局如下图
 
-                nw        n        ne
-                w      center    e
-                sw        s        se
-'''
+'''7.同时使用两个文本指定同一个属性'''
+# 没有特别设置的话，最后创建的那个会覆盖掉其它所有的设置
+# -*- coding: utf-8 -*-
 from tkinter import *
-root = Tk()
-# 左对齐，文本居中
-Label(root,text = 'welcome to jcodeer.cublog.cn',bg = 'yellow',width = 40,height = 3,wraplength = 80,justify = 'left').pack()
-# 居中对齐，文本居左
-Label(root,text = 'welcome to jcodeer.cublog.cn',bg = 'red',width = 40,height = 3,wraplength = 80,anchor = 'w').pack()
-# 居中对齐，文本居右
-Label(root,text = 'welcome to jcodeer.cublog.cn',bg = 'blue',width = 40,height = 3,wraplength = 80,anchor = 'e').pack()
 
+root = Tk()
+t = Text(root)
+# 创建一个TAG，其前景色为红色
+t.tag_config('a', foreground='red')
+t.tag_config('b', foreground='blue')
+# 使用TAG 'a'来指定文本属性
+t.insert(1.0, '0123456789', ('b', 'a'))
+t.pack()
+root.mainloop()
+# 结果是文本的颜色不是按照insert给定的顺序来设置，而是按照tag的创建顺序来设置的。
+
+
+'''8.控制tag的级别'''
+# 使用tag_lower/tag_raise来降低或提高tag的级别
+# -*- coding: utf-8 -*-
+from tkinter import *
+
+root = Tk()
+t = Text(root)
+# 创建一个TAG，其前景色为红色
+t.tag_config('a', foreground='red')
+t.tag_config('b', foreground='blue')
+# 使用tag_lower来降低a的级别
+t.tag_lower('a')
+# 使用TAG 'a'来指定文本属性
+t.insert(1.0, '0123456789', ('b', 'a'))
+t.pack()
+root.mainloop()
+# 结果：文本内容颜色变为了蓝色，蓝色的作用级别大于红色了，即使是先创建了蓝色。
+
+
+'''9.对文本块添加tag'''
+# tag_add方法的使用
+# -*- coding: utf-8 -*-
+from tkinter import *
+
+root = Tk()
+t = Text(root)
+# 创建一个TAG，其前景色为蓝色
+t.tag_config('b', foreground='blue')
+for i in range(10):
+    t.insert(1.0, '0123456789\n')
+t.tag_add('b', '2.5', '2.end')
+t.pack()
+root.mainloop()
+# 先向Text中添加了10行文本，创建一tag，将第2行第6列至第二行行尾使用使用此tag
+
+'''10.使用自定义mark对文本块添加tag'''
+# -*- coding: utf-8 -*-
+# tag_add方法的使用
+from tkinter import *
+
+root = Tk()
+t = Text(root)
+# 创建一个TAG，其前景色为蓝色
+t.tag_config('b', foreground='blue')
+for i in range(10):
+    t.insert(1.0, '0123456789\n')
+# 自定义两个mark，并使用它们来指定添加tag的文本块
+t.mark_set('ab', '3.1')
+t.mark_set('cd', END)
+t.tag_add('b', 'ab', 'cd')
+
+t.pack()
+root.mainloop()
+# 先向Text中添加了10行文本，创建两个mark('ab'和'cd')，将使用这两个tag指定文本的文本块使用此tag
+
+
+'''11.使用indexes获得Text中的内容'''
+# -*- coding: utf-8 -*-
+# 分别使用内置的indexes和自定义mark来获取文本
+# get方法的使用
+from tkinter import *
+
+root = Tk()
+t = Text(root)
+for i in range(10):
+    t.insert(1.0, str(i) + ' 0123456789\n')
+# 获得1.0-2.3的文本
+print(t.get('1.0', '2.3'))
+# 自定义两个mark，并使用它们来获得文本块
+t.mark_set('ab', '3.1')
+t.mark_set('cd', END)
+print(t.get('ab', 'cd'))
+t.pack()
 root.mainloop()
 
-'''
-运行一下程序就可以直观的看出，justify与anchor的区别了：一个用于控制多行的对齐；另一个用于
-控制整个文本块在Label中的位置
-'''
+'''12.测试delete对tag的影响'''
+# -*- coding: utf-8 -*-
+# delete方法不会对tag造成影响，也就是说删除文本与tag没有任何关系
+from tkinter import *
+
+root = Tk()
+t = Text(root)
+# 创建一个TAG，其前景色为蓝色
+t.tag_config('b', foreground='blue')
+for i in range(10):
+    t.insert(1.0, str(i) + ' 0123456789\n')
+# 自定义两个mark，并使用它们来指定添加tag的文本块
+t.mark_set('ab', '3.1')
+t.mark_set('cd', END)
+t.tag_add('b', 'ab', 'cd')
+# 删除(1.0 - 4.0)的文本
+t.delete('1.0', '4.0')
+t.pack()
+root.mainloop()
+# (1.0-4.0)的文本全部初始删除了，剩余的文本全部以蓝色显示，即还保留tag的属性
+
+
+'''13.使用tag_delete对文本属性的影响'''
+# -*- coding: utf-8 -*-
+# 使用tag_delete方法操作tag
+from tkinter import *
+
+root = Tk()
+t = Text(root)
+# 创建一个TAG，其前景色为蓝色
+t.tag_config('b', foreground='blue')
+for i in range(10):
+    t.insert(1.0, str(i) + ' 0123456789\n')
+# 自定义两个mark，并使用它们来指定添加tag的文本块
+t.mark_set('ab', '3.1')
+t.mark_set('cd', END)
+t.tag_add('b', 'ab', 'cd')
+# 删除tag 'b'，注意这个操作是在tag_add之后进行的。
+t.tag_delete('b')
+t.pack()
+root.mainloop()
+# 结果所有的文本没有了tag('b')属性，即tag_delete会清除所有与此tag相关的属性，不论是之前还是之后
+
+
+'''Tkinter教程之Text篇(3)'''
+'''14.自定义tag的两个内置属性'''''
+# tag.first:tag之前插入文本，此文本不包含在这个tag中
+# tag.last:tag之后插入文本，此文本包含在这个tag中
+# -*- coding: utf-8 -*-
+# 使用tag的内置属性来插入文本
+from tkinter import *
+
+root = Tk()
+t = Text(root)
+# 创建一个TAG，其前景色为蓝色
+t.tag_config('b', foreground='blue')
+for i in range(10):
+    t.insert(1.0, str(i) + ' 0123456789\n')
+# 自定义两个mark，并使用它们来指定添加tag的文本块
+t.mark_set('ab', '3.1')
+t.mark_set('cd', END)
+t.tag_add('b', 'ab', 'cd')
+# 删除tag 'b'，注意这个操作是在tag_add之后进行的。
+# 在tag('b')之前插入'first'
+t.insert('b.first', 'first')
+# 在tag('b')之后插入'last'
+t.insert('b.last', 'last')
+t.pack()
+root.mainloop()
+# 注意：first没有使用tag('b')属性，last使用了tag('b')属性
+
+
+'''15.在Text中创建按钮'''
+# -*- coding: utf-8 -*-
+# 使用window_create在Text内创建一widget
+from tkinter import *
+
+root = Tk()
+t = Text(root)
+for i in range(10):
+    t.insert(1.0, '0123456789 ')
+
+
+def printText():
+    print('buttin in text')
+
+
+bt = Button(t, text='button', command=printText)
+# 在Text内创建一个按钮
+t.window_create('2.0', window=bt)
+# 没有调用pack()
+# bt.pack()
+t.pack()
+root.mainloop()
+# 注意：使用window_create，而不是使用insert('2.0',bt);pack()也不用调用;
+# 点击这个按钮，打印出'button in text'，证明这个按钮是可以正常工作的。
+
+
+'''16.在Text中创建一个图像(未实现)'''
+# -*- coding: utf-8 -*-
+# 使用window_create在Text内创建一widget
+from tkinter import *
+
+root = Tk()
+t = Text(root)
+for i in range(10):
+    t.insert(1.0, '0123456789\n')
+# 分别使用BitmapImage和PhotoImage进行测试，均没有显示出图像？？？
+# bm = BitmapImage('gray75')
+bm = PhotoImage('d:/1.png')
+# 在Text内创建一个图像
+t.image_create('2.0', image=bm)
+print(t.image_names())
+# 打印的图像名称都是正确的
+t.pack()
+root.mainloop()
+# 按照手册中的说明未实现这种效果，原因不知。
+
+
+'''17.绑定tag与事件'''
+# -*- coding: utf-8 -*-
+# 使用tag_bind方法
+from tkinter import *
+
+root = Tk()
+t = Text(root)
+for i in range(10):
+    t.insert(1.0, '0123456789\n')
+# 创建一个tag
+t.tag_config('a', foreground='blue', underline=1)
+
+
+# Enter的回调函数
+def enterTag(event):
+    print('Enter event')
+
+
+# 绑定tag('a')与事件('<Enter>')
+t.tag_bind('a', '<Enter>', enterTag)
+t.insert(2.0, 'Enter event ', 'a')
+t.pack()
+root.mainloop()
+# 注意：使用tag_bind绑定tag与事件，当此事件在tag上发生时便就会调用这个tag的回调函数
+# 因为使用了Enter事件，此事件含有一个参数，故将enterTag加了一个参数，程序中不使用此参数
+
+
+'''18.使用edit_xxx实现编辑常用功能(未实现)'''
+# -*- coding: utf-8 -*-
+# 使用edit_xxx函数实现编辑常用功能
+from tkinter import *
+
+root = Tk()
+t = Text(root)
+for i in range(10):
+    t.insert(1.0, '0123456789\n')
+t.pack()
+
+
+# 定义回调函数
+# 撤消回调函数
+def undoText():
+    t.edit_undo()
+
+
+# 插入文本函数
+def insertText():
+    t.insert(1.0, 'insert text')
+
+
+Button(root, text='undo', command=undoText).pack(fill=X)
+Button(root, text='insert text', command=insertText).pack(fill=X)
+
+root.mainloop()
+# 这个edit_undo方法也是不起作用，不知为何？？？

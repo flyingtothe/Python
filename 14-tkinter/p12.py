@@ -1,118 +1,90 @@
-# Radiobutton为单选按钮，即在同一组内只能有一个按钮被选中，每当选中组内的一个按钮时，
-# 其它的按钮自动改为非选中态，与其他控件不同的是：它有组的概念
-'''1.创建一个简单的Radiobutton'''
+'''
+# Scale为输出限定范围的数字区间，可以为之指定最大值，最小值及步距值
+'''
+
+# _*_coding:utf-8_*_
+import tkinter as tk
 from tkinter import *
 
-root = Tk()
-Radiobutton(root, text='python').pack()
-Radiobutton(root, text='tkinter').pack()
-Radiobutton(root, text='widget').pack()
+if __name__ == '__main__':
+    root = tk.Tk()
+    root.wm_title('Scale')
+    root.geometry("1800x800+120+100")  # 设置窗口大小  并初始化桌面位置
+    root.resizable(width=True, height=True)  # 宽不可变 高可变  默认True
 
-'''2.创建一个Radiobutton组，使用绑定变量来设置选中哦的按钮'''
-# 创建一个Radiobutton组，创建三个Radiobutton，并绑定到整型变量v
-# 选中value=1的按钮
-v = IntVar()
-v.set(1)
-for i in range(3):
-    Radiobutton(root, variable=v, text='python' + str(i), value=i).pack()
+    fram = Frame(root)
+    # 创建一个垂直Scale，最大值为100，最小值为0，步距值为1。这个参数设置也就是Scale的缺省设置了
+    Scale(fram).pack(side=LEFT)
 
-'''3.创建两个不同的组'''
-vLang = IntVar()
-vOS = IntVar()
-vLang.set(1)
-vOS.set(2)
-for v in [vLang, vOS]:  # 创建两个组
-    for i in range(3):  # 每个组含有3个按钮
-        Radiobutton(root,
-                    variable=v,
-                    value=i,
-                    text='python_' + str(v) + '_' + str(i)
-                    ).pack()
-root.mainloop()
-# 不指定绑定变量，每个Radiobutton自成一组
+    # 2、改变这三个参数，生成 一个水平Scale，最小值为－500，最大值为500，步距值为5
+    Scale(fram, from_=-500,  # 设置最小值,注意from_的使用方式，在其后添加了"_"，避免与关键字from的冲突
+          to=500,  # 设置最大值
+          resolution=5,  # 设置步距值
+          orient=HORIZONTAL  # 设置水平方向
+          ).pack(side=LEFT)
 
+    fram.pack(side=TOP)
 
-'''4.如果同一个组中的按钮使用相同的alue，则这两个按钮的工作方式完全相同'''
-# -*- coding: utf-8 -*-
-from tkinter import *
-
-root = Tk()
-v = IntVar()
-v.set(1)
-for i in range(3):
-    Radiobutton(root,
-                variable=v,
-                value=1,
-                text='python_1_' + str(i)
-                ).pack()
-for i in range(3):
-    Radiobutton(root,
-                variable=v,
-                value=i,
-                text='python_2_' + str(2 + i)
-                ).pack()
-root.mainloop()
-# 上述的例子中共有4个alue为1的值，当选中其中的一个时，其他三个也会被选中；选中除了这四个只外的按钮时，四个按钮全部取消
+    # 3、Scale绑定变量
+    fram1 = Frame(root)
+    v = StringVar()
+    Scale(fram1, from_=-500,
+          to=200,
+          resolution=1,
+          orient=HORIZONTAL,
+          variable=v
+          ).pack(side=LEFT)  # 绑定变量
+    print(v.get())
 
 
-'''5.与Checkbutton类似，每个Radiobutton可以有自己的处理函数，每当点击按钮时，系统会调用相应的处理函数'''
-# -*- coding: utf-8 -*-
-from tkinter import *
-
-root = Tk()
-v = IntVar()
-v.set(0)
-
-
-def r1():
-    print('call r1')
+    # 4、使用回调函数打印当前的值
+    # 定义回调函数,这个回调函数有一个参数，这个值是当前的Scale的值，每移动一个步距就会调用一次这个函数，只保证最后一个肯定会调用，
+    # 中间的有可能不会调用,通过上例可以看到二者的值是完全一样的
+    def callScale(text):
+        print('v = ' + v.get())
+        print('text = ' + text)
 
 
-def r2():
-    print('call r2')
+    v = StringVar()
+    Scale(fram1, from_=-500,
+          to=500.0,
+          resolution=0.0001,
+          orient=HORIZONTAL,
+          variable=v,
+          command=callScale  # 设置回调函数
+          ).pack(side=LEFT)
+    print(v.get())
+    fram1.pack(side=TOP)
 
+    # 5、控制显示位数，可以理解为：Scale的值为一整形，在输出显示时，它将会被转化为一字符串，如1.2转化为1.2或1.2000都是可以的
+    # 属性digits是控制显示的数字位数,将上面的例子中的数据以8位形式显示，在最后一位会添加一个0
+    fram2 = Frame(root)
+    Scale(fram2, from_=-500,
+          to=500.0,
+          resolution=0.0001,
+          orient=HORIZONTAL,
+          digits=8,  # 设置显示的位数为8,属性digits是控制显示的数字位数,将上面的例子中的数据以8位形式显示，在最后一位会添加一个0
+          ).pack(side=LEFT)
+    fram2.pack(side=TOP)
 
-def r3():
-    print('call r3')
+    # 6、设置Scale的标签属性label
+    # 由label设置的值会显示在水平Scale的上方，用于提示信息
+    fram3 = Frame(root)
+    Scale(fram3, from_=-500,
+          to=500.0,
+          resolution=0.0001,
+          orient=HORIZONTAL,
+          label='Scale',  # 设置标签值
+          ).pack(side=LEFT)
+    fram3.pack(side=TOP)
 
+    # 7、设置/取得Scale的值
+    # slider的位置位于了中间，sl.set(50)起作用了，打印值为50。
+    fram4 = Frame(root)
+    sl = Scale(fram4)
+    sl.set(50)  # 将Scale的值设置为50
+    print(sl.get())  # 打印当前的Scale的值
+    sl.pack(side=LEFT)
+    fram4.pack(side=TOP)
 
-def r4():
-    print('call r4')
-
-
-i = 0
-# 创建8个按钮，其中两个两个的value值相同
-for r in [r1, r2, r3, r4]:
-    Radiobutton(root,
-                variable=v,
-                text='radio button',
-                value=i,
-                command=r
-                ).pack()
-    Radiobutton(root,
-                variable=v,
-                text='radio button',
-                value=i,
-                command=r
-                ).pack()
-    i += 1
-
-root.mainloop()
-# 注意虽然同时可以选中两个按钮，但每次点击按钮，执行的代码只有一次
-
-
-'''6.Radiobutton另一个比较实用的属性是indicatoron,缺省情况下为1，如果将这个属性改为0，则其外观是Sunken'''
-from tkinter import *
-
-root = Tk()
-v = IntVar()
-v.set(1)
-for i in range(3):
-    Radiobutton(root,
-                variable=v,
-                indicatoron=0,
-                text='python & tkinter',
-                value=i
-                ).pack()
-root.mainloop()
-# Radiobutton表示按钮的弹起或按下两种状态
+    root.mainloop()

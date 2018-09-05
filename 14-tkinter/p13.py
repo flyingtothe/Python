@@ -1,90 +1,100 @@
-'''
-# Scale为输出限定范围的数字区间，可以为之指定最大值，最小值及步距值
-'''
-
-# _*_coding:utf-8_*_
-import tkinter as tk
+# Scrollbar（滚动条），可以单独使用，但最多的还是与其它控件（Listbox,Text,Canva等)结合使用
+'''1创建一个Scrollbar'''
 from tkinter import *
 
-if __name__ == '__main__':
-    root = tk.Tk()
-    root.wm_title('Scale')
-    root.geometry("1800x800+120+100")  # 设置窗口大小  并初始化桌面位置
-    root.resizable(width=True, height=True)  # 宽不可变 高可变  默认True
+root = Tk()
+Scrollbar(root).pack()
+# 显示了一个Scrollbar，但什么也做不了，无法拖动slider。
 
-    fram = Frame(root)
-    # 创建一个垂直Scale，最大值为100，最小值为0，步距值为1。这个参数设置也就是Scale的缺省设置了
-    Scale(fram).pack(side=LEFT)
+'''2.通过set方法来设置slider的位置'''
+# 使用水平滚动条，通过set将值设置为(0.5,1),即slider占整个Srollbar的一半
+sl = Scrollbar(root, orient=HORIZONTAL)
+sl.set(0.5, 1)
+sl.pack()
 
-    # 2、改变这三个参数，生成 一个水平Scale，最小值为－500，最大值为500，步距值为5
-    Scale(fram, from_=-500,  # 设置最小值,注意from_的使用方式，在其后添加了"_"，避免与关键字from的冲突
-          to=500,  # 设置最大值
-          resolution=5,  # 设置步距值
-          orient=HORIZONTAL  # 设置水平方向
-          ).pack(side=LEFT)
+root.mainloop()
 
-    fram.pack(side=TOP)
+'''3.使用回调函数（不建议这样使用）'''
+# -*- coding: utf-8 -*-
+from tkinter import *
 
-    # 3、Scale绑定变量
-    fram1 = Frame(root)
-    v = StringVar()
-    Scale(fram1, from_=-500,
-          to=200,
-          resolution=1,
-          orient=HORIZONTAL,
-          variable=v
-          ).pack(side=LEFT)  # 绑定变量
-    print(v.get())
+root = Tk()
 
 
-    # 4、使用回调函数打印当前的值
-    # 定义回调函数,这个回调函数有一个参数，这个值是当前的Scale的值，每移动一个步距就会调用一次这个函数，只保证最后一个肯定会调用，
-    # 中间的有可能不会调用,通过上例可以看到二者的值是完全一样的
-    def callScale(text):
-        print('v = ' + v.get())
-        print('text = ' + text)
+def scrollCall(moveto, pos):
+    # 如何得到两个参数：使用如下打印中的信息，可以看到解释器传给scrollCall函数的两个参数，一个为
+    # moveto,参考手册可以得知，它是当拖动slider时调用的函数；另一个参数为slider的当前位置，我们
+    # 可以通过set函数来设置slider的位置，因此使用这个pos就可以完成控制slider的位置。
+    # print moveto,pos
+    sl.set(pos, 0)
+    print(sl.get())
 
 
-    v = StringVar()
-    Scale(fram1, from_=-500,
-          to=500.0,
-          resolution=0.0001,
-          orient=HORIZONTAL,
-          variable=v,
-          command=callScale  # 设置回调函数
-          ).pack(side=LEFT)
-    print(v.get())
-    fram1.pack(side=TOP)
+sl = Scrollbar(root, orient=HORIZONTAL, command=scrollCall)
+sl.pack()
+root.mainloop()
+# 这样还有一个严重问题，只能对其进行拖动。对两个按钮及pagedwon/pageup的响应，由于up按钮响应的为三个参数，故会出
+# 现异常。这个例子只是用来说明command属性是可用的，如果喜欢自己可以处理所有的消息，将scrollCall是否可以改为变参数函数？
+# 对于不同的输入分别进行不同的处理。
 
-    # 5、控制显示位数，可以理解为：Scale的值为一整形，在输出显示时，它将会被转化为一字符串，如1.2转化为1.2或1.2000都是可以的
-    # 属性digits是控制显示的数字位数,将上面的例子中的数据以8位形式显示，在最后一位会添加一个0
-    fram2 = Frame(root)
-    Scale(fram2, from_=-500,
-          to=500.0,
-          resolution=0.0001,
-          orient=HORIZONTAL,
-          digits=8,  # 设置显示的位数为8,属性digits是控制显示的数字位数,将上面的例子中的数据以8位形式显示，在最后一位会添加一个0
-          ).pack(side=LEFT)
-    fram2.pack(side=TOP)
 
-    # 6、设置Scale的标签属性label
-    # 由label设置的值会显示在水平Scale的上方，用于提示信息
-    fram3 = Frame(root)
-    Scale(fram3, from_=-500,
-          to=500.0,
-          resolution=0.0001,
-          orient=HORIZONTAL,
-          label='Scale',  # 设置标签值
-          ).pack(side=LEFT)
-    fram3.pack(side=TOP)
+'''4.单独使用还是比较少见，大部分应用还是与其它控件的绑定，以下是将一个Listbox与Scrollbar绑定的例子'''
+# -*- coding: utf-8 -*-
+from tkinter import *
 
-    # 7、设置/取得Scale的值
-    # slider的位置位于了中间，sl.set(50)起作用了，打印值为50。
-    fram4 = Frame(root)
-    sl = Scale(fram4)
-    sl.set(50)  # 将Scale的值设置为50
-    print(sl.get())  # 打印当前的Scale的值
-    sl.pack(side=LEFT)
-    fram4.pack(side=TOP)
+root = Tk()
+lb = Listbox(root)
+sl = Scrollbar(root)
+sl.pack(side=RIGHT, fill=Y)
+# side指定Scrollbar为居右；fill指定填充满整个剩余区域，到WM在时候再详细介绍这几个属性。
+# 下面的这句是关键：指定Listbox的yscrollbar的回调函数为Scrollbar的set
+lb['yscrollcommand'] = sl.set
+for i in range(100):
+    lb.insert(END, str(i))
+# side指定Listbox为居左
+lb.pack(side=LEFT)
+# 下面的这句是关键：指定Scrollbar的command的回调函数是Listbar的yview
+sl['command'] = lb.yview
+root.mainloop()
 
-    root.mainloop()
+'''5.这样理解二者之间的关系：当Listbox改变时，Scrollbar调用set以改变slder的位置；当Scrollbar改变了slider的位置时，Listbox调用yview以显示新的list项,为了演示这两种关系先将yscrollcommad与scrollbar的set解除绑定，看看会有什么效果'''
+# -*- coding: utf-8 -*-
+from tkinter import *
+
+root = Tk()
+lb = Listbox(root)
+sl = Scrollbar(root)
+sl.pack(side=RIGHT, fill=Y)
+# 解除Listbox的yscrollcommand与Scrollbar的set绑定
+# lb['yscrollcommand'] = sl.set
+for i in range(100):
+    lb.insert(END, str(i))
+# 使用索引为50的元素可见
+lb.see(50)
+lb.pack(side=LEFT)
+sl['command'] = lb.yview
+root.mainloop()
+# 运行结果，Listbox显示了50项，即Listbox的视图已经到50了，但Scrollbar的slider仍旧位于0处。也就是说Scroolbar没有收到set
+# 的命令。即说明解除此绑定，Scrollbar将不再响应Listbox视图改变的消息。但仍可以使用Scrollbar的slider来移动Listbox的视图。
+
+
+'''6.再测试一下，解除Scrollbar的command与Listbox的yview的关系，测试代码如下：'''
+# -*- coding: utf-8 -*-
+from tkinter import *
+
+root = Tk()
+lb = Listbox(root)
+sl = Scrollbar(root)
+sl.pack(side=RIGHT, fill=Y)
+# 下面的这句是关键：指定Listbox的yscrollbar的回调函数为Scrollbar的set
+lb['yscrollcommand'] = sl.set
+for i in range(100):
+    lb.insert(END, str(i * 100))
+# 使用索引为50的元素可见
+lb.see(50)
+lb.pack(side=LEFT)
+# 解除Scrollbar的command与Listbox的yview的关系
+# sl['command'] = lb.yview
+root.mainloop()
+# 运行程序，Scrollbar的slider已经到了50位置，也就是说Scrollbar响应了Listbox视图改变的消息，调用 了自己的set函数。
+# 进行操作：拖动slder或点击up/down按钮，Listbox的视图没有任何反应，即Listbox不会响应Scrollbar的消息了。

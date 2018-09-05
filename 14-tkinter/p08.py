@@ -1,194 +1,205 @@
-# Listbox为列表框控件，它可以包含一个或多个文本项(text item)，可以设置为单选或多选
+'''1.Label的第一个例子
+text属性使用方法
+'''
+# 要使用Tk模块，除非你不想使用这个模块，那整个教程就不需要看了
+from tkinter import *
+# 初始化Tk
+root = Tk()
+# 创建一个label，使用编码，到现在为止还没有使用过直接通过“drag-and-drop”就可以完成的IDE。
+label = Label(root, text='Hello Tkinter')
+# 显示label，给相应组件制定布局，必须含有此语句
+label.pack()
+# root.pack()
+# 但root是不需要（严格地说是必须不这样使用），否则解释器抱怨
+# 进入消息循环
+root.mainloop()
+# 控件的显示步骤：
+# 1.创建这个控件
+# 2.指定这个空间的master，即这个控件属于哪一个
+# 3.告诉GM(geometry manager)有一个控件产生了
+'''
+还有更简单的一个例子：将‘Hello Tkinter’打印到标题上，Label也不用创建了
+from Tkinter import *
+root = Tk()
+root.title('hello Tkinter')
+root.mainloop()
+再没法儿简化了，就这样吧
+'''
+'''2.在label上使用内置位图
+bitmap的使用方法
+'''
+from tkinter import *
+# 初始化Tk
+root = Tk()
+# 创建一个label，使用编码，到现在为止还没有使用过直接通过“drag-and-drop”就可以完成的IDE。
+label = Label(root,bitmap = 'error')
+# 上面的代码使用了内置位图error
 
-'''1.创建一个Listbox，向其中添加三个item'''
-from tkinter import *
-root = Tk()
-lb = Listbox(root)
-for item in ['python','tkinter','widget']:
-    lb.insert(END,item)
-lb.pack()
-root.mainloop()
+# 显示label，必须含有此语句
+label.pack()
 
-'''2.创建一个可以多选的Listbox,使用属性selectmaod'''
-from tkinter import *
-root = Tk()
-lb = Listbox(root,selectmode = MULTIPLE)
-for item in ['python','tkinter','widget']:
-    lb.insert(END,item)
-lb.pack()
+# 进入消息循环
 root.mainloop()
-# 依次点击这三个item，均显示为选中状态。
-# 属性MULTIPLE允许多选，每次点击item，它将改变自己的当前选状态，与Checkbox有点相似
+'''
+其他可用的位图：
+    * error
+    * hourglass
+    * info
+    * questhead
+    * question
+    * warning
+    * gray12 
+    * gray25 
+    * gray50
+    * gray75
+若要查看各自的效果，可以使用相应的名称将bitmpa = 'error'替换。
+据说还可以使用自己指定的位图文件,网上找了一下，格式如下：
+    Label(root, bitmap="@/path/bitmapname")
+不过我试了一下，从来没有成功过，我已经将位图该为单色的了:(
 
-'''3这个属性selectmode还可以设置为BROWSE,可以通过鼠标来移动Listbox中的选中位置（不是移动item），这个属性也是Listbox在默认设置的值，这个程序与1.程序运行的结果的一样的。'''
+另：还有的网上的文章说明如何使用PhotoImage和BitmapImage显示bmp或gif文件，提到一点
+防止图像文件被python自动回收(garbage collected)，应将bmp或gif放到全局(global)或实体
+(instance)中，使用如下两种方法，仍未奏效：
+'''
+# 使用image属性
+#    bm = PhotoImage(file = 'c:/python.gif')
+#    label = Label(root,image = bm)
+#    label.bm = bm
+# 错误信息：
+# TclError: image "pyimageXX" doesn't exist
+# 使用bitmap属性
+#    bm = BitmapImage(file='c:/python2.bmp')
+#    label = Label(root,bitmap=bm)
+#    label.bm = bm
+#    label.pack()
+# 错误信息：
+# TclError: format error in bitmap data
+'''
+虽然二者均没有起作用，还是要说明一下，bitmap与image的关系，如果同时指定这两参数，image
+优先。
+'''
+'''3.改变控件的前景色和背景色
+fg:前景色
+bg:背景色
+设置背景色的一个大的用处是：可以判断控件的大小（不同的控件使用不同的颜色，后续内容
+可以使用此特性来调试container）
+'''
 from tkinter import *
 root = Tk()
-lb = Listbox(root,selectmode = BROWSE)
-for item in ['python','tkinter','widget']:
-    lb.insert(END,item)
-lb.pack()
+#在创建Label时指定各自使用的颜色
+'''可以使用的颜色值：'''
+#使用颜色名称
+Label(root,fg = 'red',bg = 'blue',text = 'Hello I am Tkinter').pack()
+#使用颜色值#RRGGBB
+Label(root,fg = 'red',bg = '#FF00FF',text = 'Hello I am Tkinter').pack()
+#使用系统相关的颜色值（Windows），不建议使用这样的值，不利于平台移植
+Label(root,fg = 'red',bg = 'SystemButtonShadow',text = 'Hello I am Tkinter').pack()
 root.mainloop()
-# 使用鼠标进行拖动，可以看到选中的位置随之变化。
-# 与BROWSE相似 的为SINGLE，但不支持鼠标移动选中位置。
+'''
+(1).使用颜色名称
+Red
+Green
+Blue
+Yellow
+LightBlue
+......
+(2).使用#RRGGBB
+label = Label(root,fg = 'red',bg = '#FF00FF',text = 'Hello I am Tkinter')
+指定背景色为绯红色
+(3).除此之外，Tk还支持与OS相关的颜色值，如Windows支持
+SystemActiveBorder, 
+SystemActiveCaption, 
+SystemAppWorkspace, 
+SystemBackground,
+......
+'''
+'''4.设置宽度与高度
+width:    宽度
+height:    高度
+'''
 from tkinter import *
 root = Tk()
-lb = Listbox(root,selectmode = BROWSE)
-for item in ['python','tkinter','widget']:
-    lb.insert(END,item)
-lb.pack()
-root.mainloop()
-# 使用鼠标进行拖动,没有任何变化
-'''4.使用selectmode  = EXPANDED使用Listbox来支持Shift和Control。'''
-from tkinter import *
-root = Tk()
-lb = Listbox(root,selectmode = EXTENDED)
-for item in ['python','tkinter','widget']:
-    lb.insert(END,item)
-lb.pack()
-root.mainloop()
-# 运行程序，点中“python"，shift + 点击"widget"，会选中所有的item
-# 运行程序，点中"python"，control + 点击"widget"，会选中python和widget，第二项tkinter处于非选中状态
+# 创建三个Label，分别显示red,blue,yellow
+# 注意三个Label的大小，它们均与文本的长度有关
+Label(root,text = 'red',bg = 'red').pack()
+Label(root,text = 'blue',bg = 'blue').pack()
+Label(root,text = 'yellow',bg = 'yellow').pack()
 
-'''5.向Listbox中添加一个item'''
-# 以上的例子均使用了insert来向Listbox中添加 一个item，这个函数有两个属性一个为添加的索引值，另一个为添加的项(item)
-#  有两个特殊的值ACTIVE和END，ACTIVE是向当前选中的item前插入一个（即使用当前选中的索引作为插入位置）；END是向
-#  Listbox的最后一项添加插入一项
-# 先向Listbox中追加三个item，再在Listbox开始添加三项
+# 再创建三个Label，与上次不同的是这三个Label均使用width和heigth属性
+# 三个Label的大小由width和height指定
+Label(root,bg = 'red',width = 10,height = 3).pack()
+Label(root,bg = 'blue',width = 10,height = 3).pack()
+Label(root,bg = 'yellow',width = 10,height = 3).pack()
+root.mainloop()
+'''5.同时使用图像与文本
+compound:    指定文本(text)与图像(bitmap/image)是如何在Label上显示，缺省为None，
+当指定image/bitmap时，文本(text)将被覆盖，只显示图像了。可以使用的值：
+    left：    图像居左
+    right:    图像居右
+    top：    图像居上
+    bottom：图像居下
+    center：文字覆盖在图像上
+bitmap/image:
+    显示在Label上的图像
+text:
+    显示在Label上的文本
+label = Label(root,text = 'Error',compound = 'left',bitmap = 'error')
+'''
 from tkinter import *
 root = Tk()
-lb = Listbox(root)
-for item in ['python','tkinter','widget']:
-    lb.insert(END,item)
-# 只添加一项将[]作为一个item
-# lb.insert(0,['linux','windows','unix'])
-# 添加三项，每个string为一个item
-lb.insert(0,'linux','windows','unix')
-lb.pack()
-root.mainloop()
-'''6.删除Listbox中的项，使用delete，这个函数也有两个参数，第一个为开始的索引值；第二个为结束的索引值，如果不指定则只删除第一个索引项。'''
-from tkinter import *
-root = Tk()
-lb = Listbox(root)
-for i in range(10):
-    lb.insert(END,str(i))
-lb.delete(1,3)
-lb.pack()
-root.mainloop()
-# 运行程序，只有值0456789,1-3被删除
-# 删除全部内容,使用delete指定第一个索引值0和最后一个参数END，即可
-# lb.delete(0,END)
-'''7.选中操作函数，使用函数实现。selection_set函数有两个参数第一个为开始的索引；第二个为结束的索引，如果不指定则只选中第一个参数指定的索引项'''
-from tkinter import *
-root = Tk()
-lb = Listbox(root)
-for i in range(10):
-    lb.insert(END,str(i))
-lb.selection_set(0,10)
-lb.pack()
-root.mainloop()
-#  程序运行结果，选中了所有的项。 此代码并未指定Listbox为MULTIPLE或EXTENDED，查通过selection_set仍旧可以对Listbox
-# 进行操作。
+# 演示compound的使用方法
+# 图像与文本在Label中的位置
+# 图像居下
+Label(root,text = 'botton',compound = 'bottom',bitmap = 'error').pack()
+# 图像居上
+Label(root,text = 'top',compound = 'top',bitmap = 'error').pack()
+# 图像居右
+Label(root,text = 'right',compound = 'right',bitmap = 'error').pack()
+# 图像居左
+Label(root,text = 'left',compound = 'left',bitmap = 'error').pack()
+# 文字覆盖在图像上
+Label(root,text = 'center',compound = 'center',bitmap = 'error').pack()
 
-# 与之相对的便是取消选中的函数了，参数与selection_set在参数相同，如下代码取消索引从0－3在状态
-from tkinter import *
-root = Tk()
-lb = Listbox(root)
-for i in range(10):
-    lb.insert(END,str(i))
-lb.selection_set(0,10)
-lb.selection_clear(0,3)
-lb.pack()
-root.mainloop()
-
-'''8.得到当前Listbox中的item个数'''
-from tkinter import *
-root = Tk()
-lb = Listbox(root)
-for i in range(10):
-    lb.insert(END,str(i))
-lb.delete(3)
-print (lb.size())
-lb.pack()
-root.mainloop()
-# 首先向Listbox中添加 了10个item,然后删除索引为3在item,最后的打印结果为9，即当前的Listbox中只有9项
-
-'''9.返回指定索引的项'''
-from tkinter import *
-root = Tk()
-lb = Listbox(root)
-for i in range(10):
-    lb.insert(END,str(i*100))
-print (lb.get(3))
-lb.pack()
-root.mainloop()
-# 返回值为300
-# get也为两个参数的函数，可以返回多个项(item)，如下返回索引值3－7的值
-from tkinter import *
-root = Tk()
-lb = Listbox(root)
-for i in range(10):
-    lb.insert(END,str(i*100))
-print (lb.get(3,7))
-lb.pack()
-root.mainloop()
-# 返回值为('300', '400', '500', '600', '700')，是一个tuple类型。
-
-'''10.返回当前返回的项的索引，不是item的值'''
-from tkinter import *
-root = Tk()
-lb = Listbox(root)
-for i in range(10):
-    lb.insert(END,str(i*100))
-lb.selection_set(3,8)
-print (lb.curselection())
-lb.pack()
-root.mainloop()
-# 返回值为('3', '4', '5', '6', '7', '8')，而不是('300','400','500','600','700','800')，哑然无法直接得到各项的值，知道了索引，得到值
-# 就很容易了:lb.get()就可以实现。
-
-'''11.判断 一个项是否被选中，使用索引。'''
-from tkinter import *
-root = Tk()
-lb = Listbox(root)
-for i in range(10):
-    lb.insert(END,str(i*100))
-lb.selection_set(3,8)
-print (lb.selection_includes(8))
-print (lb.selection_includes(0))
-
-lb.pack()
-root.mainloop()
-# 返回结果：True Flase，即8包含在选中的索引中，0不包含在选中的索引中
-
-'''12.Listbox与变量绑定'''
-# -*- coding: cp936 -*-
-from tkinter import *
-root = Tk()
-v = StringVar()
-lb = Listbox(root,listvariable = v)
-for i in range(10):
-    lb.insert(END,str(i*100))
-# 打印当前列表中的项值
-print (v.get())
-# 输出：('0', '100', '200', '300', '400', '500', '600', '700', '800', '900')
-# 改变v的值,使用tuple可以与item对应
-v.set(('1000','200'))
-# 结果只有两项了1000和200
-lb.pack()
+# 消息循环
 root.mainloop()
 
-'''13.Listbox与事件绑定'''
-#  它不支持command属性来设置回调函数了，使用bind来指定回调函数,打印当前选中的值
-# -*- coding: cp936 -*-
+'''6.文本的多行显示
+在Tk004中，使用width和heigth来指定控件的大小，如果指定的大小无法满足文本的要求是，会出现
+什么现象呢？如下代码：
+    Label(root,bg = 'welcome to jcodeer.cublog.cn',width = 10,height = 3).pack()
+运行程序，超出Label的那部分文本被截断了，常用的方法是：使用自动换行功能，及当文本长度大于
+控件的宽度时，文本应该换到下一行显示，Tk不会自动处理，但提供了属性：
+wraplength：    指定多少单位后开始换行
+justify:        指定多行的对齐方式
+ahchor：        指定文本(text)或图像(bitmap/image)在Label中的显示位置
+可用的值：
+e
+w
+n
+s
+ne
+se
+sw
+sn
+center
+布局如下图
+
+                nw        n        ne
+                w      center    e
+                sw        s        se
+'''
 from tkinter import *
 root = Tk()
-def printList(event):
-    print (lb.get(lb.curselection()))
-lb = Listbox(root)
-lb.bind('<Double-Button-1>',printList)
-for i in range(10):
-    lb.insert(END,str(i*100))
-lb.pack()
+# 左对齐，文本居中
+Label(root,text = 'welcome to jcodeer.cublog.cn',bg = 'yellow',width = 40,height = 3,wraplength = 80,justify = 'left').pack()
+# 居中对齐，文本居左
+Label(root,text = 'welcome to jcodeer.cublog.cn',bg = 'red',width = 40,height = 3,wraplength = 80,anchor = 'w').pack()
+# 居中对齐，文本居右
+Label(root,text = 'welcome to jcodeer.cublog.cn',bg = 'blue',width = 40,height = 3,wraplength = 80,anchor = 'e').pack()
+
 root.mainloop()
 
-# 还有一个比较实用的功能没有介绍：滚动条的添加，留到后面介绍Scrollbar的时候再一并介绍
+'''
+运行一下程序就可以直观的看出，justify与anchor的区别了：一个用于控制多行的对齐；另一个用于
+控制整个文本块在Label中的位置
+'''
