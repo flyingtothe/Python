@@ -141,19 +141,47 @@
         - 案例 06
 
     - Label	        标签控件；可以显示文本和位图
+        - 案例 07
+    
     - Listbox	    列表框控件；在Listbox窗口小部件是用来显示一个字符串列表给用户
+        - 案例 08
+    
     - Menubutton	菜单按钮控件，由于显示菜单项。
+        - 案例 09
+
     - Menu	        菜单控件；显示菜单栏,下拉菜单和弹出菜单
+        - 案例 10
+
     - Message	    消息控件；用来显示多行文本，与label比较类似
+        - 案例 11
+
     - Radiobutton	单选按钮控件；显示一个单选的按钮状态
+        - 案例 12
+
     - Scale	        范围控件；显示一个数值刻度，为输出限定范围的数字区间
+        - 案例 13
+
     - Scrollbar	    滚动条控件，当内容超过可视化区域时使用，如列表框。.
+        - 案例 14
+
     - Text	        文本控件；用于显示多行文本
+        - 案例 15
+
     - Toplevel	    容器控件；用来提供一个单独的对话框，和Frame比较类似
+        - 案例 16
+
     - Spinbox	    输入控件；与Entry类似，但是可以指定输入范围值
+        - 案例 17
+
     - PanedWindow	PanedWindow是一个窗口布局管理的插件，可以包含一个或者多个子控件。
+        - 案例 18
+
     - LabelFrame	labelframe 是一个简单的容器控件。常用与复杂的窗口布局。
+        - 案例 19
+
     - messagebox	用于显示你应用程序的消息框。
+        - 案例 20
+
 
 # GUI介绍
 - GraphicalUserInterface
@@ -169,4 +197,8 @@
     - 需要商业授权
 - Jython
     - 程序可以和 Java 无缝集成
-    
+
+- 推荐资料
+    - 辛星GUI, 辛星Python
+    - Python GUI Proguamming cookbook
+    - Tkinter reference a GUI for Python
