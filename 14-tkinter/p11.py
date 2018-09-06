@@ -122,7 +122,8 @@ menubar = Menu(root)
 
 # 每次打印出当前选中的语言
 def printItem():
-    print('add_separator')
+    print
+    'add_separator'
 
 
 filemenu = Menu(menubar, tearoff=0)

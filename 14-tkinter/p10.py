@@ -10,6 +10,11 @@ mbLang = Menubutton(root, text='Language')
 mbLang.menu = Menu(mbLang)
 # 生成菜单项
 for item in ['Python', 'PHP', 'CPP', 'C', 'Java', 'JavaScript', 'VBScript']:
+    # add_command：如果是顶层菜单，则从左向右添加，否则就是下拉菜单
+    # 参数：
+    #   label：定义菜单名称     command：点击后调用的函数
+    #   accceletor：快捷键      underline：指定菜单信息是否有下划线
+    #   men：指定使用哪一个作为顶级菜单
     mbLang.menu.add_command(label=item)
 mbLang['menu'] = mbLang.menu
 mbLang.pack(side=LEFT)

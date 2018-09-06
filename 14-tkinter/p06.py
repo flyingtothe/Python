@@ -4,7 +4,7 @@ from tkinter import *
 root = Tk()
 Entry(root,text = 'input your text here').pack()
 root.mainloop()
-#上面的代码目的是创建一个Entry对象，并在Entry上显示'input your text here',运行此代码，并没有看到文本的显示，由此可知与Lable和Button不同，Entry的text属性不可以设置Entry的文本
+# 上面的代码目的是创建一个Entry对象，并在Entry上显示'input your text here',运行此代码，并没有看到文本的显示，由此可知与Lable和Button不同，Entry的text属性不可以设置Entry的文本
 
 '''2.在Entry中设定初始值，使用textvariable将变量与Entry绑定'''
 from tkinter import *
@@ -15,7 +15,7 @@ e.set('input your text here')
 entry.pack()
 root.mainloop()
 
-#上面的例子中将变量e与Entry绑定，然后将e的值设置为'input your text here'，程序运行时的初始值便设置了。
+# 上面的例子中将变量e与Entry绑定，然后将e的值设置为'input your text here'，程序运行时的初始值便设置了。
 
 '''3.设置为只读Entry.
 Entry的另一个比较有用的属性，设置为只读，不允许用户对它的值改变。
