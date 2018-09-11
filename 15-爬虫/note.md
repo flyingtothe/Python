@@ -213,27 +213,28 @@
     - 异步请求
     - 一定会有 url，请求方法，可能有数据
     - 一般使用 json 格式
-    - 案例，爬去豆瓣电影， 案例 20
+    - 案例，爬取豆瓣电影， 案例 20
     
 # Requests-献给人类
 - HTTP for Humans，更简洁更友好
-- 继承了urllib的所有特征
-- 底层使用的是urllib3
+- 继承了 urllib 的所有特征
+- 底层使用的是 urllib3
 - 开源地址： https://github.com/requests/requests
 - 中文文档： http://docs.python-requests.org/zh_CN/latest/index.html   
 - 安装： conda install requests
+
 - get请求
     - requests.get(url)
     - requests.request("get", url)
-    - 可以带有headers和parmas参数
+    - 可以带有 headers 和 parma s参数
     - 案例 21
 - get返回内容
     - 案例 22
     
 - post
     - rsp = requests.post(url, data=data)
-    - 参看案例 23
-    - date, headers要求dict类型
+    - 案例 23
+    - date, headers 要求 dict 类型
 - proxy
    - 
         
@@ -248,50 +249,238 @@
 - 用户验证
     - 代理验证
     
-            #可能需要使用HTTP basic Auth， 可以这样
+            # 可能需要使用 HTTP basic Auth， 可以这样
             # 格式为  用户名:密码@代理地址：端口地址
             proxy = { "http": "china:123456@192.168.1.123：4444"}
             rsp = requests.get("http://baidu.com", proxies=proxy)
+
 - web客户端验证
-    - 如果遇到web客户端验证，需要添加auth=（用户名，密码）
+    - 如果遇到 web 客户端验证，需要添加 auth=（用户名，密码）
     
-            autu=("test1", "123456")#授权信息
+            autu=("test1", "123456")   # 授权信息
             rsp = requests.get("http://www.baidu.com", auth=auth)
 - cookie
-    - requests可以自动处理cookie信息
-    
+    - requests可以自动处理 cookie 信息
         
               rsp = requests.get("http://xxxxxxxxxxx")
               # 如果对方服务器给传送过来cookie信息，则可以通过反馈的cookie属性得到
-              # 返回一个cookiejar实例
+              # 返回一个 cookieja 实例
               cookiejar = rsp.cookies   
               
-              
-              #可以讲cookiejar转换成字典
+              # 可以将 cookiejar 转换成字典
               cookiedict = requests.utils.dict_from_cookiejar(cookiejar)         
     
 - session
-    - 跟服务器端session不是一个东东
+    - 跟服务器端 session 不是一个
     - 模拟一次会话，从客户端浏览器链接服务器开始，到客户端浏览器断开
-    - 能让我们跨请求时保持某些参数，比如在同一个session实例发出的 所有请求之间保持cookie
+    - 能让我们跨请求时保持某些参数，比如在同一个 session 实例发出的 所有请求之间保持cookie
     
-    
-            # 创建session对象，可以保持cookie值
+            # 创建 session 对象，可以保持 cookie 值
             ss = requests.session()
             
             headers = {"User-Agetn":"xxxxxxxxxxxxxxxxxx"}
             
             data = {"name":"xxxxxxxxxxx"}
             
-            # 此时，由创建的session管理请求，负责发出请求，
+            # 此时，由创建的 session 管理请求，负责发出请求，
             ss.post("http://www.baidu.com", data=data, headers=headers)
             
             rsp = ss.get("xxxxxxxxxxxx")
             
 - https请求验证ssl证书
-    - 参数verify负责表示是否需要验证ssL证书，默认是True
-    - 如果不需要验证ssl证书，则设置成False表示关闭
+    - 如果不需要验证 ssl 证书，则设置成 False 表示关闭
     
-        
             rsp = requests.get("https://www.baidu.com", verify=False)
-            # 如果用verify=True访问12306，会报错，因为他证书有问题 
+            # 如果用 verify=True 访问 12306，会报错，因为他证书有问题 
+
+# 页面解析和数据提取
+- 结构数据：先谈结构，在谈数据
+    - JSOM 文件
+        - JSON Path
+        - 转换为 python 类型进行操作（json类）
+    - XML 文件
+        - 转换为 python 类型进行操作（xmltodict）
+        - XPath
+        - CSS 选择器
+        - 正则
+
+- 非结构数据:：先有数据，在谈结构
+    - 文本
+    - 电话号码
+    - 邮箱
+        - 通常处理此类数据，使用正则表达式
+    - HTML 文件
+        - 正则
+        - XPath
+        - CSS 选择器
+
+# 正则表达式
+- 一套规则，可以在字符串文本中进行搜查替换等
+- 案例 24 基本使用流程
+- 案例 25 match 的基本使用
+    - match:从开始位置开始查找，一次匹配
+    - search;从任何位置查找，一次匹配
+        - 案例 26
+    - findall:全部匹配，返回列表
+        - 案例 27
+    - finiter:全部匹配，返回迭代器
+        - 案例 27
+    - split:分割字符串，返回列表
+    - sub:替换
+- 匹配中文
+    - 中文 unicode 范围[u4e00-u9fa5]
+    - 案例 28
+    
+- 贪婪与非贪婪模式
+    - 贪婪模式： 在整个表达式匹配成功的前提下，尽可能多的匹配
+    - 非贪婪模式： xxxxxxxxxxxxxxxxxxxxxx, 尽可能少的匹配
+    - python里面数量词默认是贪婪模式
+    - 例如：
+        - 查找文本abbbbbbccc
+        - re是 ab*
+        - 贪婪模式： 结果是abbbbbb
+        - 非贪婪： 结果是a
+# XML
+- XML(EXtensibleMarkupLanguage)   
+-    http://www.w3school.com.cn/xml/index.asp
+- 案例 29.xml
+- 概念：父节点，子节点，先辈节点，兄弟节点，后代节点
+
+# XPath
+- XPath(XML Path Language), 是一门在XML文档中查找信息的语言，
+- 官方文档： http://www.w3school.com.cn/xpath/index.asp
+- XPath开发工具
+    - 开元的XPath表达式工具： XMLQuire
+    - chrome插件： Xpath Helper
+    - Firefox插件： XPath CHecker
+    
+- 常用路径表达式：
+    - nodename: 选取此节点的所有子节点
+    - /: 从根节点开始选
+    - //: 选取元素，而不考虑元素的具体为止
+    - .:  当前节点
+    - ..:父节点
+    - @： 选取属性
+    - 案例：
+        - booksotre: 选取bookstore下的所有子节点
+        - /booksotre: 选取根元素
+        - booksotre/book: 选取bookstore的所有为book的子元素
+        - //book: 选取book子元素
+        - //@lang:选取名称为lang的所有属性
+        
+- 谓语(Predicates)
+    - 谓语用来查找某个特定的节点，被向前在方括号中
+    - /bookstore/book[1]: 选取第一个属于bookstore下叫book的元素
+    - /bookstore/book[last()]: 选取最后一个属于bookstore下叫book的元素
+    - /bookstore/book[last()-1]: 选取倒数第二个属于bookstore下叫book的元素
+    - /bookstore/book[position()<3]: 选取属于bookstore下叫book的前两个元素
+    - /bookstore/book[@lang]: 选取属于bookstore下叫book的,含有属性lang元素
+    - /bookstore/book[@lang="cn"]: 选取属于bookstore下叫book的,含有属性lang的值是cn的元素
+    - /bookstore/book[@price < 90]: 选取属于bookstore下叫book的,含有属性price的，且值小于90的元素
+    - /bookstore/book[@price < 90]/title: 选取属于bookstore下叫book的,含有属性price的，且值小于90的元素的子元素title
+    
+- 通配符
+    - `*` : 任何元素节点
+    - @*： 匹配任何属性节点
+    - node(): 匹配任何类型的节点
+- 选取多个路径
+    - //book/tile  | //book/author : 选取book元素中的title和author元素
+    - //tile | //price: 选取文档中所有的title和price元素
+  
+# lxml库
+- python 的 HTML/XML 的解析器
+- 官方文档：   http://lxml.de/index.html
+- 功能：
+    - 解析HTML(补全片段),案例 30
+    - 文件读取，案例 31, 32
+    - etree和XPath的配合使用, 案例 33
+
+# CSS选择器  BeautifulSoup4
+- 现在使用 BeautifulSoup4
+- http://beautifulsoup.readthedocs.io/zh_CN/v4.4.0/
+- 几个常用提取信息工具的比较：
+    - 正则： 很快，不好用，不需安装
+    - beautifulsoup：慢，使用简单，安装简单
+    - lxml： 比较快，使用简单，安装一般
+- 案例 34
+- 四大对象
+    - Tag
+    - NavigableString
+    - BeautifulSoup
+    - Comment
+- Tag
+    - 对应 Html 中的标签
+    - 可以通过 soup.tag_name
+    - tag 两个重要属性
+        - name
+        - attrs
+    - 案例 35
+ 
+- NavigableString
+    - 对应内容值
+  
+- BeautifulSoup
+    - 表示的是一个文档的内容，大部分可以把他当做 tag 对象
+    - 一般我们可以用 soup 来表示
+
+- Comment
+    - 特殊类型的 NavagableString 对象， 
+    - 对其输出，则内容不包括注释符号
+
+- 遍历文档对象
+    - contents: tag 的子节点以列表的方式给出 
+    - children： 子节点以迭代器形式返回 
+    - descendants： 所子孙节点
+    - string
+    - 案例 35
+
+- 搜索文档对象
+    - find_all(name, attrs, recursive, text, ** kwargs)  
+        - name:按照那个字符串搜索，可以传入的内容为
+            - 字符串
+            - 正则表达式
+            - 列表
+        - kewwortd参数，可以用来表示属性
+        - text： 对应tag的文本值
+        - 案例 35
+            
+- css选择器
+    - 使用soup.select, 返回一个列表
+    - 通过标签名称: soup.select("title")            
+    - 通过类名： soup.select(".content")
+    - id查找: soup.select("#name_id")
+    - 组合查找: soup.select("div #input_content")
+    - 属性查找: soup.select("img[class='photo'])
+    - 获取tag内容： tag.get_text
+    - 案例 36
+
+# 动态 HTML
+- 爬虫与反爬虫
+
+- 动态 HTML 介绍
+    - JavaScript
+    - Jquery
+    - Ajax
+    - DHTML
+
+- python 采集动态数据
+    - 从 javascripet 代码入手采集
+    - 用第三方库运行 JavaScript，直接采集在浏览器看到的页面
+
+- Selenium + PhantomJs
+    - Selenium:web 自动化测试工具
+        - 自动加载页面
+        - 获取数据
+        - 截屏
+        - 安装：pip install selenium==2.48.0
+        - 官网：http://selenium-python.readthedocs.io/index.html
+
+    - PhantomJs(幽灵)
+        - 基于 webkit 的无界面浏览器
+        - 官网：http://phantomjs.org/download.html
+    
+    - Selenium 库有一个 webdriver 的 api
+    - webdriver 可以更页面上的元素进行各种交互，用他可以进行爬取
+    - 案例 37
+
+- chrome + chromedriver
