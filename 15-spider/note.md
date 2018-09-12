@@ -484,3 +484,53 @@
     - 案例 37
 
 - chrome + chromedriver
+
+- Selenium 操作主要分为两大类；
+    - 得到 UI 元素
+        - find_element_by_id
+        - find_elements_by_name
+        - find_element_by_xpath
+        - find_elements_by_link_text
+        - find_element_by_partial_link_text
+        - find_elements_by_tag_name
+        - find_elements_by_class_name
+        - find_element_by_css_selector
+    - 给予 UI 元素操作的模拟
+        - 单击
+        - 右键
+        - 拖拽
+        - 输入
+        - 可以通过倒入 ActionsChains 类来做到
+    - 案例 38
+
+# 验证码问题
+-作用：判断访问者身份
+- 分类
+    - 通用
+        - 下载网页和验证码
+        - 手动输入验证码
+    - 简单图片
+        - 使用图像识别软件或文字识别软件
+        - 第三方图像验证破解网站   www.chaojiying.com
+    - 极验， 官网：http://www.geetest.com
+        - 破解繁琐
+        - 可以模拟鼠标移动
+        - 一直在进化
+    - 12306
+    - 电话： 语音识别
+    - google 验证
+
+# Tessercct
+- 机器视觉领与的基础软件
+- OCR:OpticalChracterRecognition,光学文字识别
+- Tessert:一个 ocr 库，google赞助
+- 安装
+    - windows：https://jingyan.baidu.com/article/219f4bf788addfde442d38fe.html
+    - Mac;brew install tesseract
+    - linux:apt-get install tessertact-ocr
+    - 安装完成后需设置环境变量
+- 安装后还需要 pytessertact
+    - pip install pytesseract
+
+- 读取
+    - 案例 39
