@@ -27,56 +27,60 @@
     - 存储内容： pipelines.py,   
     
 - ItemPipeline
-    - 对应的是pipelines文件
-    - 爬虫提取出数据存入item后，item中保存的数据需要进一步处理，比如清洗，去重，存储等
+    - 对应的是 pipelines 文件
+    - 爬虫提取出数据存入 item 后，item 中保存的数据需要进一步处理，比如清洗，去重，存储等
     - process_item:
-        - spider提取出来的item作为参数传入，同时传入的还有spider
+        - spider提取出来的 item 作为参数传入，同时传入的还有 spider
         - 此方法必须实现
-        - 必须返回一个Item对象，被丢弃的item不会被之后的pipeline处理
+        - 必须返回一个 Item 对象，被丢弃的 item 不会被之后的 pipeline 处理
     - __init__:构造函数
         - 进行一些必要的参数初始化     
     - open_spider(spider):
         - spider对象被开启的时候调用
     - close_spider(spider):
         - 当spider对象被关闭的时候调用 
+
 - Spider
-    - 对应的是文件夹spiders下的文件
-    - __init__: 初始化爬虫名称，start_urls列表
-    - start_requests:生成Requests对象交给Scrapy下载并返回response
-    - parse： 根据返回的response解析出相应的item，item自动进入pipeline； 如果需要，解析出url，url自动交给
-            requests模块，一直循环下去
-    - start_request: 此方法仅能被调用一次，读取start_urls内容并启动循环过程
+    - 对应的是文件夹 spiders 下的文件
+    - __init__: 初始化爬虫名称，start_urls 列表
+    - start_requests:生成 Requests 对象交给 Scrapy 下载并返回 response
+    - parse： 根据返回的 response 解析出相应的 item，item 自动进入 pipeline； 如果需要，解析出 url，url 自动交给
+            requests 模块，一直循环下去
+    - start_request: 此方法仅能被调用一次，读取 start_urls 内容并启动循环过程
     - name:设置爬虫名称
-    - start_urls:  设置开始第一批爬取的url
-    - allow_domains:spider允许爬去的域名列表
+    - start_urls:  设置开始第一批爬取的 url
+    - allow_domains:spider 允许爬去的域名列表
     - start_request(self)： 只被调用一次
     - parse
     - log:日志记录
+
 - 中间件(DownloaderMiddlewares)
     - 中间件是处于引擎和下载器中间的一层组件
     - 可以有很多个，被按顺序加载执行
     - 作用是对发出的请求和返回的结果进行预处理
-    - 在middlewares文件中
-    - 需要在settings中设置以便生效
+    - 在 middlewares 文件中
+    - 需要在 settings 中设置以便生效
     - 一般一个中间件完成一项功能
     - 必须实现以下一个或者多个方法
         - process_request(self, request, spider)
-            - 在request通过的时候被调用
-            - 必须返回None或Response或Request或raise IgnoreRequest
-            - None: scrapy将继续处理该request
-            - Request： scrapy会停止调用process_request并冲洗调度返回的reqeust
-            - Response： scrapy不会调用其他的process_request或者process_exception，直接讲该response作为结果返回
-            同时会调用process_response函数
+            - 在 request 通过的时候被调用
+            - 必须返回 None 或 Response 或 Request 或 raise IgnoreRequest
+            - None: scrapy 将继续处理该 request
+            - Request： scrapy 会停止调用 process_request 并冲洗调度返回的 reqeust
+            - Response： scrapy 不会调用其他的 process_request 或者 process_exception，直接讲该 response 作为结果返回
+                        同时会调用 process_response 函数
+        
         - process_response(self, request, response,  spider)
-            - 跟process_request大同小异
+            - 跟 process_request 同小异
             - 每次返回结果的时候会自动调用
             - 可以有多个，按顺序调用
+        
         - 案例代码
         
                 import random
                 import base64
                 
-                # 从settings设置文件中导入值
+                # 从 settings 设置文件中导入值
                 from settings import USER_AGENTS
                 from settings import PROXIES
                 
@@ -98,8 +102,8 @@
                             #  对应到代理服务器的信令格式里
                             request.headers['Proxy-Authorization'] = 'Basic ' + base64_userpasswd
                             request.meta['proxy'] = "http://" + proxy['ip_port']
-        - 设置settings的相关代码
         
+        - 设置 settings 的相关代码
         
                 USER_AGENTS = [
                             "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0; .NET CLR
@@ -126,22 +130,22 @@
                         {'ip_port': '122.96.59.104:80', 'user_passwd': 'user3:pass3'},
                         {'ip_port': '122.224.249.122:8088', 'user_passwd': 'user4:pass4'},
                         ]
+
 - 去重
     - 为了放置爬虫陷入死循环，需要去重
-    - 即在spider中的parse函数中，返回Request的时候加上dont_filter=False参数
+    - 即在 spider 的 parse 函数中，返回 Request 的时候加上 dont_filter=False 参数
     
-            myspeder(scrapy.Spider):
+            myspider(scrapy.Spider):
                 def parse(.....):
                 
                     ......
                     
                     yield  scrapy.Request(url=url, callback=self.parse, dont_filter=False)                
        
-- 如何在scrapy使用selenium
-    - 可以放入中间件中的process_request函数中
-    - 在函数中调用selenium，完成爬取后返回Response
+- 如何在 scrapy 使用 selenium
+    - 可以放入中间件中的 process_request 函数中
+    - 在函数中调用 selenium，完成爬取后返回 Response
     
-        
             calss MyMiddleWare(object):
                 def process_request(.....):
                     
@@ -150,9 +154,61 @@
                     driver.quit()
                     
                     return HtmlResponse(url=request.url, encoding='utf-8', body=html, request=request)
-                    
-
             
+# scrapy-shell
+- https://segmentfault.com/a/1190000013199636?utm_source=tag-newest
+- shell 
+- 启动
+	- Linux： ctr+T,打开终端，然后输入 scrapy shell "url:xxxx"
+	- windows: scrapy shell "url:xxx"
+	- 启动后自动下载指定 ur l的网页
+	- 下载完成后，url 的内容保存在 respons e的变量中，如果需要，我们需要调用 response
+- response
+	- 爬取到的内容保存在 response 中
+	- response.body 是网页的代码
+	- resposne.headers 是返回的 http 的头信息,可用 for 遍历
+	- response.xpath() 允许使用 xpath 语法选择内容
+	- response.css() 允许使用 css 语法选区内容
+- selector
+	- 选择器，允许用户使用选择器来选择自己想要的内容
+	- response.selector.xpath: response.xpath 是 selector.xpath 的快捷方式
+	- response.selector.css: response.css 是他的快捷方式
+	- selector.extract:把节点的内容用 unicode 形式返回
+	- selector.re:允许用户通过正则选取内容
+
+# 分布式爬虫
+- 单机爬虫的问题：
+    - 单机效率
+    - IO 吞吐量
+- 多爬虫问题
+    - 数据共享
+    - 在空间上不同的多台机器，可以成为分布式
+- 需要做：
+    - 共享队列
+    - 去重
+- Redis
+    - 内存数据库
+    - 同时可以落地保存到硬盘
+    - 可以去重
+    - 可以把他理解成一个 dict，set，list 的集合体  
+    - 可以对保存的内容进行生命周期控制 
+
+- 需更改设置，将队列设置为远程的
+
+- 内容保存数据库
+    - MongoDB
+    - Mysql 等传统关系数据库
+  
+- 安装 scrapy_redis
+    - pip install scrapy_reids
+    - github.com/rolando/scrapy-redis
+    - scrapy-redis.readthedocs.org
+
+# 推荐书籍
+- Python 爬虫开发与项目实战， 范传辉， 机械工业出版社
+- 精通 python 爬虫框架 scrapy, 李斌 翻译， 人民邮电出版社
+- 崔庆才， 
+
 - 案例e16-qq招聘
     - 创建项目
     - 编写item
