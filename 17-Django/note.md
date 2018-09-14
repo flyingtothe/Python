@@ -20,7 +20,7 @@
  
 # 后台需要的流程
 
-# 创建第一个django程序
+# 创建第一个django 程序
 - 命令行启动
 
         django-admin startproject tulingxueyuan
