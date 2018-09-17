@@ -47,16 +47,22 @@
     2. 已知 url 匹配到哪个处理模块
 
 - url 匹配规则
+
+    path('articles/<int:year>/<int:month>)/', views.month_archive),
+
     - 从上向下，一个个比对
     - url 格式是分级格式，则按照级别向下对比，主要对应 url 包含子 url 的情况
     - 子 url 一旦被调用，则不会反回到主 url
         - '/one/two/three/'
-    - 正则已 r 开头，表示不需要转义，注意 ^ 和 $
-        - '/one/two/three'     配对 r'^one/'
-        - '/oo/one/two/three'  不配对 r'^one/'
-        - '/one/two/three/'    配对 r'three/$'
-        - '/oo/one/two/three/oo/' 不配对 r'three/$'
-        - 开头反斜杠会被路由忽略
+    - 正则，命名格式（?P<name>pattern），name是组的命名，pattern是需要匹配的表达式
+            
+            urlpatterns = [
+                path('articles/2003/', views.special_case_2003),
+                re_path('articles/(?P<year>[0-9]{4})/', views.year_archive),
+                re_path('articles/(?P<year>[0-9]{4})/(?P<month>[0-9]{2})/', views.month_archive),
+                re_path('articles/(?P<year>[0-9]{4})/(?P<month>[0-9]{2})/(?P<slug>[^/]+)/', views.article_detail),
+            ]
+
     - 如果从上向下都没有找到合适的匹配内容，则报错
 
 # 正常映射
@@ -76,3 +82,49 @@
     '''
     /search/page/432 中的 432 需要经常更换
     '''
+s
+# url 在 app 中处理
+- 如果所有应用的 url 都集中在 tulingxueyuan/urls/py 中，可能导致文件臃肿
+- 可将 urls 具体功能逐渐拆分至各个 app 中
+    - 从 django.conf.urls 导入 include
+    - 注意 RE 写法
+    - 添加 include 导入
+
+- 使用方法
+    - 导入 include
+    - 写主路由的开头 url
+    - 写子路由
+    - 编写视图
+
+- 可以使用参数
+
+# url 中嵌套的参数（级联参数）
+- 捕获某个参数的一部分
+    - 例如 URL/index/page-3, 需要捕获数字 3 作为参数
+        
+        '''
+        re_path(r'^blog/(page-(\d+)/)?$', blog_articles),                  # bad
+        
+        会得到两个参数，但 ?: 表示忽略此参数
+        re_path(r'^comments/(?:page-(?P<page_number>\d+)/)?$', comments),  # good
+        '''
+
+# 传递额外参数
+- 参数不仅仅来自 url，还可能是自己定义的内容
+    
+    re_path('blog/<extrem>/', views.extremParam, {'name': 'bar'}),
+
+- 附加参数同样适用与 include 语句，此时对 include 内所有都添加
+
+# 反向解析
+- 防止硬编码
+- 本质上是对每一个 url 进行命名
+- 以后在变大代码中使用 url 的值，原则上都应该使用反向解析
+
+# 视图
+## 概述
+- 视图即视图函数，接手 web 请求并返回 web 相应的事务处理函数
+- 响应值符合 http 协议要求的任何内容，包括 json string html 等
+- 本次忽略事务处理，重点在如何返回处理结果上
+
+## 其他简单视图
