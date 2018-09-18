@@ -18,5 +18,11 @@ from django.urls import path
 from teacher_app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('^teacher/', views.teacher)
+
+    path('teacher/', views.teacher),
+    path('v2_exp/', views.v2_exception),
+
+    path('v10_1/', views.v10_1),
+    path('v10_2/', views.v10_2),
+    path('v11/', views.v11, name='v11'),
 ]

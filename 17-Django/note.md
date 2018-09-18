@@ -128,3 +128,56 @@ s
 - 本次忽略事务处理，重点在如何返回处理结果上
 
 ## 其他简单视图
+- django.http 提供了很多类似 HttpResponse 的简单视图
+- 此类视图实用的方法基本类似，可通过 return 语句直接反馈给浏览器
+- Http404 是 Exception 子类，需要 raise 使用
+
+## HttpResponse 详解
+- 方法
+    - init:使用页面内容实例化 HttpResponse 对象
+    - write(content):以文件方式写
+    - flush():以文件的方式输出缓存区
+    - set_cookie(key, value='', max_age=None, expisres=None):设置 Cookie
+        - key, value 都是字符串类型
+        - max_age 是一个证书，表示在指定秒数后过期
+        - expires 是一个 datetime 或 timedelta 对象，会话将在这个指定的日期/时间过期
+        - max_age/expires 二选一使用
+        - 如果不指定过期时间，则两个星期后过期
+    - delete_cookie(key):删除指定的 key 的 cookie，如果 key 不存在则什么也不发生
+
+## HttpRsponesRedirect
+- 重定向，服务器端跳转
+- 构造函数的第一个参数用来指定重定向的地址
+- 案例
+        '''
+        # 在 easr/urls 中添加以下内容
+        path('v10_1/', views.v10_1),
+        path('v10_2/', views.v10_2),
+        path('v11/',views.v11, name='v11'),
+        '''
+        '''
+        def v10_1(request):
+            return HttpRespinesRedirect('/v11)
+        def v10_2(request):
+            return HttpResponesRedirect(reverse('v11))
+        def v11(request):
+            return HttpResponesRedirect('v11')
+        '''
+
+## Request详解
+- 介绍
+    - 服务器收到 http 请求后，会根报文创建 HttpRequest 对象
+    - 视图函数的第一个参数是 HttpRequest 对象
+    - 在 django.http 模块中定义了 HttpRequest 对象的 API
+- 属性
+    - 下面除非特殊说明，属性都是只读的c
+    - path:一个字符串，表示请求页面的完整路径，不包含域名
+    - method:一个字符串，表示请求使用的 Http 方法，常用值包含 GET POST
+    - enoding:一个字符串，表示提交数据的编码方式
+        - 为 none 表示浏览器默认设置，一般为 utf-8
+        - 这个属性是可写的，可通过设置 encoding 更改表单数据使用的编码方式
+    - GET:类似于字典的对象，包含 get 请求方式的所有参数
+    - POST:类似于字典的对象，包含 post 请求方式的所有参数
+    - Files:类似于字典的对象，包含所有的上传文件
+    - COOKIES:标准的 python 字典，包含所有的 cookie，键和值为字符串
+    - session:一个可读写的类似于字典的对象，表示当前会话，只有当 django 
