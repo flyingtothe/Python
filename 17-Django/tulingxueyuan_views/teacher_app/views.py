@@ -11,6 +11,13 @@ def v2_exception(r):
     raise Http404
     return HttpResponse('ok')
 
+def v8_get(request):
+    rst = ''
+    for k,v in request.GET.items():
+        rst += k + '-->' + v
+        rst += ", "
+    return HttpResponse('Get value of Reauest is {0}'.format())
+
 def v10_1(request):
     return HttpResponseRedirect('/v11')
 

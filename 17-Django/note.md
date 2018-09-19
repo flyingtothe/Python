@@ -6,6 +6,8 @@
     - [django中文教程](http://python.usyiyi.cn/)
     - django 架站的 16 堂课
 
+- django 简化版是 Flask
+
 # 环境搭建
 - anaconda+pycharm
 - anaconda使用
@@ -16,8 +18,7 @@
         - (Linux)source activate env_name
         - (win) activate env_name
     - pip install django=1.8
- 
- 
+
 # 后台需要的流程
 
 # 创建第一个django 程序
@@ -169,6 +170,7 @@ s
     - 服务器收到 http 请求后，会根报文创建 HttpRequest 对象
     - 视图函数的第一个参数是 HttpRequest 对象
     - 在 django.http 模块中定义了 HttpRequest 对象的 API
+
 - 属性
     - 下面除非特殊说明，属性都是只读的c
     - path:一个字符串，表示请求页面的完整路径，不包含域名
@@ -180,4 +182,37 @@ s
     - POST:类似于字典的对象，包含 post 请求方式的所有参数
     - Files:类似于字典的对象，包含所有的上传文件
     - COOKIES:标准的 python 字典，包含所有的 cookie，键和值为字符串
-    - session:一个可读写的类似于字典的对象，表示当前会话，只有当 django 
+    - session:一个可读写的类似于字典的对象，表示当前会话
+        - 只有当 django 启用会话的支持时才可用
+        - 详细内容建“状态保持”
+
+- 方法
+    - is_ajax():入股请求是通过 XMLHttpRequest 发起的，则返回 True
+
+- QueryDict 对象
+    - 定义在 django.http.Querydict
+    - request 对象的属性 GET POST 都是 QueryDict 类型对象
+    - 与 python 字典不同，QueryDice 类型的对象用来处理弄一键多值的情况
+    - 方法 get() 根据键获取值
+        - 只能获取键的一个值
+        - 一键多值时，获取最后一个
+    - 方法 getlist()  
+        - 将键的值以列表返回，可以获取一键的多个值
+
+- GET 属性
+    - QueryDict 类型对象
+    - 包含 get 请求方式的所有参数
+    - 与 url 请求地址中的参数对应，位于 ？ 后
+    - 参数的格式是键值对
+    - 多个参数间使用 & 链接
+    - 键是开发人员定下来的，值是可变的
+    - 案例 /views/v8_get
+
+- POST 属性
+    - QueryDict 类型对象
+    - 包含 post 请求方式的所有参数
+    - 与 form 表单中的控件对应
+    - 表单中控件必须有 name 属性，name 为键，value 为值
+        - checkbox 存在一键多值的问题
+    - 键是开发人员定下来的，值是可变的
+    - 案例 ShowViews/views/v9_post
