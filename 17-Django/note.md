@@ -206,7 +206,7 @@ s
     - 参数的格式是键值对
     - 多个参数间使用 & 链接
     - 键是开发人员定下来的，值是可变的
-    - 案例 /views/v8_get
+    - 案例 tulingxueyuan_views/views/v8_get
 
 - POST 属性
     - QueryDict 类型对象
@@ -215,4 +215,82 @@ s
     - 表单中控件必须有 name 属性，name 为键，value 为值
         - checkbox 存在一键多值的问题
     - 键是开发人员定下来的，值是可变的
-    - 案例 ShowViews/views/v9_post
+    - 案例 tulingxueyuan_views/views/v9_post
+        - settings 中设置模板位置
+        - 设置 get 页面的 urls 和函数
+        '''
+        east/urls.py
+        需要在路由文件中添加两个路由
+        path('v9_get/', views.v9_get),
+        path('v9_post/', views.v9_post),
+        '''
+        '''
+        tulingxueyuan_views/views.py
+        在文件中添加两个处理函数
+        def v9_get(request):
+            return render_to_response('for_post.html')
+        def v9_post(request):
+            rst = ''
+            for k, v in request.POST.items():
+                rst += k + '-->' + v
+                rst += ", "
+            return HttpResponse('Get value of Reauest is {0}'.format(rst))
+        '''
+        - 添加文件 /easr/templates/for_post.html
+        - 有拦截，需在 settings 中注掉 crsf 设置
+        '''
+            MIDDLEWARE = [
+                'django.middleware.security.SecurityMiddleware',
+                'django.contrib.sessions.middleware.SessionMiddleware',
+                'django.middleware.common.CommonMiddleware',
+                # 安全中间件
+                # 'django.middleware.csrf.CsrfViewMiddleware',
+                'django.contrib.auth.middleware.AuthenticationMiddleware',
+                'django.contrib.messages.middleware.MessageMiddleware',
+                'django.middleware.clickjacking.XFrameOptionsMiddleware',
+            ]    
+        '''
+
+- 手动编写视图
+    - 目的
+        - 利用 django 快捷函数手动编写视图处理函数
+        - 编写过程中理解视图运行原理
+    
+    - 分析
+        - django 将所与请求信息封装入 request
+        - django 公国 urls 模块将相应请求跟时间处理函数链接，并将 request 作为参数传入
+        - 在相应的处理函数中，需要完成两部分
+            - 处理业务
+            - 将结果封装并返回
+        - 本案例不介绍业务处理，将目光集中在如何渲染结果并返回
+    
+    - render(request, template_name[,context][,context_instance][,content_type])
+        - 使用模板和一个给定的上下文环境，返回一个渲染过的HttpResponse
+        - request：django 的传入请求
+        - template_name：模板名称
+        - content_instance：上下文环境
+        - 案例 teacher_app/views/render_test
+    
+    - render_to_response
+        - 功能与上同
+        - 根据给定的上下文字典渲染指定模板，返回渲染后的 HttpResponse
+
+- 系统内建视图
+    - 系统内见视图，可直接使用
+    - 404
+        - default.page_not_found(request, template_name='404.html')
+        - 系统引发 Http404 时触发
+        - 默认传递 request_path 变量给模板，既导致错误的 url
+        - DEBUG=True 则不会调用 404，取而代之的时调试信息
+        - 404 视图会被传递一个 RequestContext 对象并且可以访问模板上下文处理器提供的变量
+    - 500(server error)
+        - default.server_error(request, template_name='500.html')
+        - DEBUG=False,否则不可调用
+    - 403(HTTP Forbidden) 视图
+        - default.permission_denied(request, template_name='403.html')
+        - 通过 PermissionDenied 触发
+    - 400(bad request) 视图
+        - default.bad_request(request, template_name='400.html')
+        - DEBUG=True
+
+- 基于类的视图

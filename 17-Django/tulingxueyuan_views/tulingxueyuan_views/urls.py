@@ -27,4 +27,15 @@ urlpatterns = [
     path('v11/', views.v11, name='v11'),
 
     path('v8/', views.v8_get),
+
+    path('v9_get/', views.v9_get),
+    path('v9_post/', views.v9_post),
+
+    path('render_test/', views.render_test),
+    path('render2_test/', views.render2_test),
+    path('render3_test/', views.render3_test),
+
+    path('render1_to_test/', views.render4_test),
+
+    path('get404/', views.get404),
 ]
