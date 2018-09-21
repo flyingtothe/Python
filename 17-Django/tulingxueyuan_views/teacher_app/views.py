@@ -66,4 +66,4 @@ def render4_test(request):
 
 def get404(request):
     from django.views import defaults
-    return defaults.page_not_found(request, Exception, template_name='render.html')
+    return defaults.page_not_found(request, Exception)

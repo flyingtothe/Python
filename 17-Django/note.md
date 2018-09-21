@@ -251,46 +251,99 @@ s
             ]    
         '''
 
-- 手动编写视图
-    - 目的
-        - 利用 django 快捷函数手动编写视图处理函数
-        - 编写过程中理解视图运行原理
-    
-    - 分析
-        - django 将所与请求信息封装入 request
-        - django 公国 urls 模块将相应请求跟时间处理函数链接，并将 request 作为参数传入
-        - 在相应的处理函数中，需要完成两部分
-            - 处理业务
-            - 将结果封装并返回
-        - 本案例不介绍业务处理，将目光集中在如何渲染结果并返回
-    
-    - render(request, template_name[,context][,context_instance][,content_type])
-        - 使用模板和一个给定的上下文环境，返回一个渲染过的HttpResponse
-        - request：django 的传入请求
-        - template_name：模板名称
-        - content_instance：上下文环境
-        - 案例 teacher_app/views/render_test
-    
-    - render_to_response
-        - 功能与上同
-        - 根据给定的上下文字典渲染指定模板，返回渲染后的 HttpResponse
+## 手动编写视图
+- 目的
+    - 利用 django 快捷函数手动编写视图处理函数
+    - 编写过程中理解视图运行原理
 
-- 系统内建视图
-    - 系统内见视图，可直接使用
-    - 404
-        - default.page_not_found(request, template_name='404.html')
-        - 系统引发 Http404 时触发
-        - 默认传递 request_path 变量给模板，既导致错误的 url
-        - DEBUG=True 则不会调用 404，取而代之的时调试信息
-        - 404 视图会被传递一个 RequestContext 对象并且可以访问模板上下文处理器提供的变量
-    - 500(server error)
-        - default.server_error(request, template_name='500.html')
-        - DEBUG=False,否则不可调用
-    - 403(HTTP Forbidden) 视图
-        - default.permission_denied(request, template_name='403.html')
-        - 通过 PermissionDenied 触发
-    - 400(bad request) 视图
-        - default.bad_request(request, template_name='400.html')
-        - DEBUG=True
+- 分析
+    - django 将所与请求信息封装入 request
+    - django 公国 urls 模块将相应请求跟时间处理函数链接，并将 request 作为参数传入
+    - 在相应的处理函数中，需要完成两部分
+        - 处理业务
+        - 将结果封装并返回
+    - 本案例不介绍业务处理，将目光集中在如何渲染结果并返回
 
-- 基于类的视图
+- render(request, template_name[,context][,context_instance][,content_type])
+    - 使用模板和一个给定的上下文环境，返回一个渲染过的HttpResponse
+    - request：django 的传入请求
+    - template_name：模板名称
+    - content_instance：上下文环境
+    - 案例 teacher_app/views/render_test
+
+- render_to_response
+    - 功能与上同
+    - 根据给定的上下文字典渲染指定模板，返回渲染后的 HttpResponse
+## 系统内建视图
+- 系统内见视图，可直接使用
+- 404
+    - default.page_not_found(request, template_name='404.html')
+    - 系统引发 Http404 时触发
+    - 默认传递 request_path 变量给模板，既导致错误的 url
+    - DEBUG=True 则不会调用 404，取而代之的时调试信息
+    - 404 视图会被传递一个 RequestContext 对象并且可以访问模板上下文处理器提供的变量
+- 500(server error)
+    - default.server_error(request, template_name='500.html')
+    - DEBUG=False,否则不可调用
+- 403(HTTP Forbidden) 视图
+    - default.permission_denied(request, template_name='403.html')
+    - 通过 PermissionDenied 触发
+- 400(bad request) 视图
+    - default.bad_request(request, template_name='400.html')
+    - DEBUG=True
+
+## 基于类的视图
+- 与基于函数的视图的优势与区别
+    - HTTP 方法的 methode 可以有各自的方法，不需要使用条件分支来解决
+    -可以使用 oop 技术（例如 mixin）
+- 概述
+    - 核心是允许使用不同的势力方法来响应不同的 HTTP 请求，避开条件分支实现
+    - as_view 函数作为类的可调入库，该方法穿件一个示例并调用 dispath 方法，按照请求方法
+    方法没有定义，则引发HttpResponseNotAllowed
+- 类属性使用
+    - 定义是直接覆盖
+    - 调用 as_view 时直接作为参数使用，例
+        '''
+        urlpatterns = [
+            path('about/', GreetingView.as_view(greeting="G'day")),
+        ]
+        '''
+- 对于基于类的视图的扩充大致有三种方法：Mixin,装饰as_ciew,装饰dispatch
+- 使用 Mixin
+    - 所继承的一种形式，来自父类的行为和属性组合在一起
+    - 解决多继承问题
+    - view 的子类只能单继承，多继承会导致不可期问题
+    - 多继承带来的问题
+        - 结构复杂
+        - 优先顺序模糊
+        - 功能冲突
+    - 解决方法
+        - 规格继承 - java interface
+        - 实现继承 - python ruby
+- 在 URLconf 中装饰
+    '''
+    from django.contrib.auth.decotators import login_required, permission_required
+    from django.views.generic import TemplateView
+    from .views import VoteView
+    
+    urlpatterns = [
+        path('about/', login_required(TemplateView.as_view(template_name))),
+        path('vote/', permission_required('polls.can_vote')(Voteview))
+    ]
+    
+    '''
+- 装饰类 
+    -类的方法和独立方法不同，不能直接运用装饰器，需要用methode_decorator
+        '''
+        rom django.contrib.auth.decotators import login_required
+        from django.utils.decorators import method_decorator
+        from django.voews.generic import TemplateView
+        class protectedview(TemplateView):
+            template_name = 'scret.html'
+            
+            @method_decorator(login_reqired)
+            def dispatch(self, *args, **kwargs):
+                return super(Protectedview, self).dispatch
+        '''
+
+## models 模型
