@@ -347,3 +347,67 @@ s
         '''
 
 ## models 模型
+- ORM
+    - ObjectRelationMap:将面向对象思想转换成关系数据库
+    - 类对应表格
+    - 类中的属性对应表中的字段
+    - 在应用中的 models.py 文件中定义 class
+    - 所有需要使用 orm 的 class 都必须是 models.Model 的子类
+    - class 中的所有属性都对应表格中的字段
+    - 字段的类型都必须使用 models.xxx 不能使用 python 中的类型
+    - 在 django 中，Models 负责跟数据库交互
+- django连接数据库
+    - 自带默认数据库 sqlite3
+        - 关系型数据库
+        - 轻量级
+    - 建议开发用 sqlite3，部署用 mysql 之类的数据库
+        - 切换数据库在 settings 中设置
+            '''
+            链接 mysql
+            DATABASES = [
+                'default' = {
+                    'ENGINE':'django.db.backends.mysql',
+                    'NAME':'数据库名称',
+                    'PASSWORD':'数据库密码',
+                    'HOST':'127.0.0.1',
+                    'PORT':'3306',
+                }
+           ]
+            '''
+        
+        - 需要在项目文件下的 __init__ 文件中导入 pymsql 包
+            '''
+            在项目 __init__ 文件中
+            import pymysql
+            pymysql.install_as_MySQLdb()
+            '''
+
+## models类的使用
+- 定义和数据库表映射的类
+    - 在应用中的 models.py 文件中定义 class
+    - 所有需要使用 orm 的 class 都必须是 models.Model 的子类
+    - class 中的所有属性对应表格的字段
+    - 字段的类型都必须使用 modles.xxx 不能使用 python 中的类型
+
+- 字段常用参数
+    - max_length:规定数值的最大长度
+    - blank:是否允许字段为空，默认不允许
+    - null:在 DB 中冬至是否保存为null，默认为 false
+    - defaule:默认值
+    - unique:唯一
+    - verbose_name:假名
+
+- 数据库的迁移
+    '''
+    1.在命令行中，生成数据迁移的语句（生成 sql 语句）
+    python3 manange.py makemigrrations
+    
+    2.在命令行中，输入数据迁移指令
+    python3 manage.py migrate
+    
+    ps:如果迁移中出现没有过变化或者报错，可以尝试强制迁移
+    
+    强制迁移指令
+    python3 manage.py makemigrations 应用名
+    python3 magage.py migrate 应用名
+    '''
