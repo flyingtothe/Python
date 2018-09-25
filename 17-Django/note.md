@@ -408,6 +408,8 @@ s
     ps:如果迁移中出现没有过变化或者报错，可以尝试强制迁移
     
     强制迁移指令
-    python3 manage.py makemigrations 应用名
-    python3 magage.py migrate 应用名
+    python manage.py makemigrations 应用名
+    python magage.py migrate 应用名
+    
+    3.对于默认数据库，为了避免出现胡乱，如果数据库中没有数据，每次迁移前可将自带的 sqlite3 数据库删除
     '''
