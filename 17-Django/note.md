@@ -413,3 +413,134 @@ s
     
     3.对于默认数据库，为了避免出现胡乱，如果数据库中没有数据，每次迁移前可将自带的 sqlite3 数据库删除
     '''
+
+## 命令行
+- 查看数据库中的数据
+    '''
+    1.启动命令行：python manage.py shell
+    ps:对 orm 的操作分为静态函数和非晶态函数两种，静态指在内存中只有一份
+    2.在命令行中倒入对应的映射类
+        from 应用.models import 类名
+    3.使用 objects 属性操作数据库 objects 是模型中实际与数据库交互的
+    4.查询命令
+        - 类名.objects.all() 查询数据库表中的所有内容，返回结果是一个 Query
+        - 类名.objects.filter(条件)
+    '''
+    
+    - 改变表结构后需重启 shell
+    
+    '''
+    python manage.py shell
+    from myapp.models import Student
+    
+    实例化对象
+    s = Student()
+    
+    对象属性赋值
+    s.name = 'zhangsan'
+    x.address = 'jjj'
+    s.phone = '12345677903'
+    s.age = 22
+    
+    保存数据
+    s.save()
+    '''
+
+- 常见查找方式
+    1.通用查找格式：属性名__（用下面的内容） = 值
+        - gt;大于
+        - gte;大于等于
+        - lt:小于
+        - lte:小于等于
+        - range;范围
+        - year:年份
+        - isnull:是否为空
+    2.查找等于指定值的格式：属性名 = 值
+    3.模糊查找：属性名__(用下面的内容) = 值
+        * exact:精确等于
+        * iexact:不区分大小写
+        * contains:包含
+        * startwith:以...开头
+        * endwith:以...结尾
+
+## 数据库表关系
+- 多表联查，利用多个表联合查找某一项信息或多项信息
+- 对应关系
+    - one to one
+        - 在django2.0后，定义外键和一对一关系的时候需要加on_delete选项，此参数为了避免两个表里的数据不一致问题，不然会报错：
+            TypeError: __init__() missing 1 required positional argument: 'on_delete'
+
+        - 参数说明：
+            on_delete有CASCADE、PROTECT、SET_NULL、SET_DEFAULT、SET()五个可选择的值
+            CASCADE：此值设置，是级联删除。
+            PROTECT：此值设置，是会报完整性错误。
+            SET_NULL：此值设置，会把外键设置为null，前提是允许为null。
+            SET_DEFAULT：此值设置，会把设置为外键的默认值。
+            SET()：此值设置，会调用外面的值，可以是一个函数。
+            一般情况下使用CASCADE就可以了
+
+        - 举例说明：
+
+            user=models.OneToOneField(User)
+            owner=models.ForeignKey(UserProfile)
+            需要改成：
+            user=models.OneToOneField(User,on_delete=models.CASCADE) --在老版本这个参数（models.CASCADE）是默认值
+            owner=models.ForeignKey(UserProfile,on_delete=models.CASCADE) --在老版本这个参数（models.CASCADE）是默认值
+
+        - 建立关系：在模型任意一遍即可，使用 onetoonefield
+        - add:
+            - 添加没有关系的一边，直接实例化保存
+                >>> s = School()
+                >>> s.school_id = 2
+                >>> s.school_name = 'jjjjj'
+                >>> s.save
+            - 添加有关系的一遍，使用 create 方法，或使用实例化然后 save
+                # 方法1
+                >>> m = Manager()
+                >>> m.manager_id = 10
+                >>> m.maanage_name = 'dana'
+                >>> m.my_school = s
+                >>> m.save()
+                
+                # 方法2:自动保存
+                >>> m = Manager.objects.create(manager_id=20, manager_name='erna', my_school=ss[0])
+        - query
+            - 有子表查目标：由子表属性直接提取信息
+            - 由母表查子表：使用双下划线
+
+                    >>> s = School.objects.get(manager__manager_name='dana')
+                    >>> s
+                    <School: nanjingtulingxueyuan>
+        - change:
+            - 单个修改使用 save
+            - 批量修改使用 update
+                >>> ss = School.objects.all()
+                >>> ss.update(school_name='图灵学院')
+                2
+                >>> ss = School.objects.all()
+                >>> ss
+                <QuerySet [<School: 图灵学院>, <School: 图灵学院>]>
+        - delete:直接使用 delete 删除
+
+    - one to many
+        - 一个表格的一个数据项/对象等，可以有生多个另一个表格的数据项
+        - 使用
+            - 使用 ForeignKey
+            - 再多的那一边，比如上例，就是在 Teacher 表格中定义
+        - add
+            - 与一对一类似，通过 create 和 new 来添加
+            - create:将属性填满，然后不需要手动保存
+            - new:可以属性或者参数为空，不许用 save 保存
+        - query
+            - 以学校何老师为例
+            - 如果知道老师查学校，则通过增加的关系属性，直接使用
+            - 反查
+                - 有学校，查找学校的所有老师，则系统自动在老师模型名称的小写下直接加下划线 set 来表示
+    
+    - many to many
+        - 表示任意一个表的数据可以拥有对方表格多项数据
+        - 例：一个学生有多个老师，一个老师有多个学生
+        - add
+            - 添加，用 student.teachers.add()
+        - query
+            - 与一对多相同
