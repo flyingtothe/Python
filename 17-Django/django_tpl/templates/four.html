@@ -6,11 +6,13 @@
 </head>
 <body>
 
-    {% if name=='最爱' %}
-
-    {% if name=='最爱' %}
-
-    {% if name=='最爱' %}
+    {% if name == '最爱' %}
+        {{name}},你好，一别十年，你还好吗
+    {% elif name == '不爱' %}
+        {{name}},你还记得大明湖畔的夏雨荷吗？
+    {% else %}
+        {{name}},我们不约
+    {% endif %}
 
 </body>
 </html>

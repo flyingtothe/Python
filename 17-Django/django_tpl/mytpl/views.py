@@ -23,5 +23,5 @@ def three(request):
 
 def four(request):
     ct = dict()
-    ct['name'] = '最爱'
+    ct['name'] = '爱'
     return render(request, 'four.html', context=ct)
