@@ -26,4 +26,4 @@ class Teacher(models.Model):
 
 class Student(models.Model):
     student_name = models.CharField(max_length=20)
-    teachers = models.ManyToManyField(Teacher, on_delete=models.CASCADE)
+    teachers = models.ManyToManyField(Teacher)
