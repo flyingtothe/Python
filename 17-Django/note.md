@@ -610,7 +610,11 @@ s
     - 解决多重继承
 
 # admin
-
+-1.创建admin
+    - 在 settings 中添加app
+    - 打开 urls.py
+    - 创建超级用户
+    - 配置 settings 文件
 
 # RESTful
 
