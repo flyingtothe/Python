@@ -170,9 +170,9 @@ import shelve
 # finally:
 #     shv.close()
 # shelve 使用 with 管理上下文环境
-# with shelve.open(r'shv.db', writeback=True) as shv:
-#     k1 = shv['one']
-#     print(k1)
-#     k1['enis'] = 1000
-# with shelve.open(r'shv.db') as shv:
-#     print(shv['one'])
+with shelve.open(r'shv.db', writeback=True) as shv:
+    k1 = shv['one']
+    print(k1)
+    k1['enis'] = 1000
+with shelve.open(r'shv.db') as shv:
+    print(shv['one'])

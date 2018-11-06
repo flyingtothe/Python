@@ -580,3 +580,38 @@ s
         {% endif %}
     
     - 案例 four
+
+- csrf 标签
+    - csrf:跨站请求伪造
+    - 提交表单时，表单页面需要叫上 {% csrf_token %}
+    - 案例 five_get, five_post
+
+# session
+- 为了应对HTTP协议的无状态性
+- 用来保存用户比较敏感的信息
+- 属于 request 的一个属性
+- 常用操作：
+    - request.seesion.get(key,defaultValue)
+    - request.seesion.clear():清空内容
+    - request.seesion[key] = value 赋值
+    - request.seesion.flush():删除当前会话且清除回话的 cookie
+    - del.request.seesion[key]
+
+# 分页
+- django 提供现成的分页器用来对结果进行分页
+- from django.core.paginator import Paginator
+- 案例 views
+
+# 基于类的视图
+- 可以针对 http 协议不同的方法创建不同的函数
+- 可以使用 Mixin 等 oop 技术
+- Mixin
+    - 将来自父类的行为或属性组合在一起
+    - 解决多重继承
+
+# admin
+
+
+# RESTful
+
+# Ajax

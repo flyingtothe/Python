@@ -1,7 +1,7 @@
-"""django_tpl URL Configuration
+"""tech_session URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.0/topics/http/urls/
+    https://docs.djangoproject.com/en/2.1/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -15,15 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
-from mytpl import views
+# from sess import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('one/', views.one),
-    path('two/', views.two),
-    path('three/', views.three),
-    path('four/', views.four),
-    path('five_get/', views.five_get),
-    path('five_post/', views.five_post),
+    # path('sess/', views.mySess),
+    # path('stu/', views.StudentListView.as_view()),
 ]

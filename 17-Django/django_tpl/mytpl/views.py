@@ -7,7 +7,6 @@ def one(request):
     return render(request, 'one.html')
 
 def two(request):
-
     # 用来存放向模板中传递的数据
     ct = dict()
     ct['name'] = input()
@@ -25,3 +24,10 @@ def four(request):
     ct = dict()
     ct['name'] = '爱'
     return render(request, 'four.html', context=ct)
+
+def five_get(request):
+    return render(request, 'five_get.html')
+
+def five_post(request):
+    print(request.POST)
+    return render(request, 'one.html')
