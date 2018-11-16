@@ -608,10 +608,34 @@ s
 - Mixin
     - 将来自父类的行为或属性组合在一起
     - 解决多重继承
+- ListView
 
 # admin
+- 1.创建 Admin
+    - settings 中添加 app
+    - 打开 urls.py
+    - 创建超级用户
+    - 配置 settings 文件
 
+- 2. 绑定管理模块
+    - 在 admin.py 中导入模型，并进行注册
 
-# RESTful
-
-# Ajax
+- 3.设置 Admin 管理类
+    - 实现方式
+        - ModelAdmin
+        - 装饰器
+    - 修改页面显示数量:list_per_page
+    - 操作选项:actions_on_top/button
+    - 控制列表中显示的内容:list_display=[]
+    - 将方法作为列表显示(须在 models 中设置)
+        - 函数必须返回值
+        - 设置 short_descraption 作为显示内容
+        - 排序使用 admin_order_field
+    - 关联对象
+        - 使用方法
+        - 示例 models
+    - 右侧过滤器
+    - 搜索框
+        - 示例 admin
+    - 分组显示
+        - 示例 admin

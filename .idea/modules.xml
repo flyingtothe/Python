@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../flask_study/.idea/flask_study.iml" filepath="$PROJECT_DIR$/../flask_study/.idea/flask_study.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../py_hook/.idea/py_hook.iml" filepath="$PROJECT_DIR$/../py_hook/.idea/py_hook.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/python.iml" filepath="$PROJECT_DIR$/.idea/python.iml" />
     </modules>
   </component>
