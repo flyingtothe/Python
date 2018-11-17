@@ -19,7 +19,10 @@ from django.urls import path, include
 # 导入路由
 from rest_framework import routers
 
+from case01 import views
 router = routers.SimpleRouter()
+# 视图注册
+router.register('student', views.StudentVS)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

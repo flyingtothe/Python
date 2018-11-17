@@ -611,18 +611,15 @@ s
 - ListView
 
 # admin
-<<<<<<< HEAD
 - 1.创建 Admin
     - settings 中添加 app
 =======
 -1.创建admin
     - 在 settings 中添加app
->>>>>>> origin/master
     - 打开 urls.py
     - 创建超级用户
     - 配置 settings 文件
 
-<<<<<<< HEAD
 - 2. 绑定管理模块
     - 在 admin.py 中导入模型，并进行注册
 
@@ -645,8 +642,3 @@ s
         - 示例 admin
     - 分组显示
         - 示例 admin
-=======
-# RESTful
-
-# Ajax
->>>>>>> origin/master

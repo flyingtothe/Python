@@ -25,4 +25,6 @@
         - python manage.py startapp case01
         - 配置 settings
         - 配置 urls
-        - 创建三个模型
+        - 创建模型
+        - 创建序列化器
+        - 创建视图集合
