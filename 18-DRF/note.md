@@ -1,6 +1,6 @@
 # Django REST Framework
 - 中文文档：https://q1mi.github.io/Django-REST-framework-documentation/
-- 1.REST
+- REST
     - 前后端分离
     - API-ApplicationProgrammingInterface:应用程序编程接口
         - 为了应对前端的需求多样性
@@ -28,3 +28,26 @@
         - 创建模型
         - 创建序列化器
         - 创建视图集合
+
+- 序列化
+    - 序列化 (Serialization):将对象的状态信息转换为可以存储或传输的形式的过程
+    - 反序列化：序列化的逆过程
+
+- 序列化/反序列化-DRF
+
+- 实验步骤
+    - 创建项目
+    - 创建app
+    - 修改settings
+
+- serializer 的类型参数
+    - read_only:仅用于序列化输出
+    - write_only:仅用于反序列化输入
+    - required:反序列化是必须输入，默认 True
+    - allow_null:允许传入 None
+    - validators:使用验证器
+
+- 创建 serializer 对象
+    - 构造方法
+
+        Serializer(instance=None, data=empty, **kwarg)
