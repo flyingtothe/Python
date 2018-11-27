@@ -51,3 +51,14 @@
     - 构造方法
 
         Serializer(instance=None, data=empty, **kwarg)
+
+    - 反序列化
+        - 验证
+            - 外来数据必须验证
+            - is_valid:
+                - 数据是否合法，返回boolean
+                - 在使用从哇哦不传入的数据之前，必须使用此函数进行验证
+                - 验证失败，返回数据错误异常
+            - validataed_data:
+                - 经过验证后的数据，存入此结构
+    - 试图
