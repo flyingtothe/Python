@@ -61,4 +61,57 @@
                 - 验证失败，返回数据错误异常
             - validataed_data:
                 - 经过验证后的数据，存入此结构
-    - 试图
+    - 视图
+        - DRF 的视图从处理任务，处理流程等跟 Django 基本一致
+        - 此视图基本是 django 试图的扩展
+        - Request
+            - 将请求解析成一个 request 实例
+            - 属于 DRF，与 django 有一定的区别
+            - 在得到 request 前，有一个 Parse 对传入数据请求进行解析
+            - data 属性(区别)
+                - 请求数据体，类似与 django 的 request.POST,request.FILES
+                - 在 DRF 中主要指 Json
+            - query_params
+                - 所有传入的关键字参数
+
+                        api.rulingxueyuan.com/student/?naem='liu'
+                        # 使用案例
+                        name = self.request.query_params.get('name', None)
+            - user
+                - 登陆后的用户信息存储在 user 中
+                - 如果没有登陆，则是 anoymous
+                - 可用来判断用户是否登陆
+        - Response
+            - rest_framework.response.Response
+            - 在 settis 中设置
+            - 用 Renderer 渲染器对返回内容进行渲染
+
+                        REST_FRAMEWORK = {
+                            'DEFAAULT_RENDERER_CLASSES':(   # 默认响应渲染类
+                                'rest_framework.renderers.JSONRenderer', # JSON 渲染器
+                                'rest_framework.renderers.BrowsableAPIRenderer', # 浏览 API 渲染器
+                        }
+            - 返回的构造方式
+                - return Response(data, status=None, template_name=None, headers=None, content_type=None)
+                - 主要使用 data
+                - data:返回的数据    *
+                - status:返回的状态码（http 状态码）
+                    - 1xx:信息告知
+                    - 2xx:成功
+                    - 3xx:重定向
+                    - 4xx:请求错误
+                    - 5xx:服务器错误
+                - headers:http 中的协议头
+                - content_type:返回的数据类型
+        - 视图类
+            - APIview
+                - rest_framework.views.APIView
+                - 是 django 中 view 的子类
+                - 与 view 区别
+                    - 传入传出数据用的是 drf 的请求和反馈类
+                    - 会引发并处理 APIExceprion（由 drf 处理）
+                    - 在 dispatch 之前，会进行身份验证，权限检查，流量控制
+                - 支持的属性
+                    - authentication_classes:列表或者元组，身份验证类
+                    - permisson_classes:进行权限验证
+                    - throttle_classes:流量控制类
