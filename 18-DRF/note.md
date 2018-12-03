@@ -77,6 +77,7 @@
                         api.rulingxueyuan.com/student/?naem='liu'
                         # 使用案例
                         name = self.request.query_params.get('name', None)
+                        
             - user
                 - 登陆后的用户信息存储在 user 中
                 - 如果没有登陆，则是 anoymous
@@ -91,6 +92,7 @@
                                 'rest_framework.renderers.JSONRenderer', # JSON 渲染器
                                 'rest_framework.renderers.BrowsableAPIRenderer', # 浏览 API 渲染器
                         }
+                        
             - 返回的构造方式
                 - return Response(data, status=None, template_name=None, headers=None, content_type=None)
                 - 主要使用 data
@@ -115,3 +117,41 @@
                     - authentication_classes:列表或者元组，身份验证类
                     - permisson_classes:进行权限验证
                     - throttle_classes:流量控制类
+                - 对 API 的访问提供了一些方便
+                    - HTTP-Method + 名词
+                    - 默认对 HttpMethod 常用方法提供支持
+                - 案例 views - StudentAPIView
+- API 调试工具
+    - chorm - postman
+    - firefox - RESTClient
+    
+    - GenericAPIView
+        - APIView 的子类
+        - 支持的属性
+            - quersset:查询结果集
+            - serializer_class:试图使用的序列化器
+            - panination_class:分页控制器
+            - filter_backends:过滤器后端
+            - look_field:查询条件字段，默认pk
+        - get_queryset:返回查询结果集集合，经常需要重写
+        - get_serializer_class:得到序列化器类
+        - get_serializer:得到序列化器
+
+- LisetModelMixin(无任何参数，将结果以列表形式返回)
+    - list(request, *arg, **kwargs)
+- CreateModelMixim(增加)
+    - create(request, *args, **kwargs)
+- RetrieveModelMixin(准确查询一个)
+    - retrieve(request, *args, **kwargs)
+- UpdateModelMixin(修改)
+    - update(request, *args, **kwargs)
+- DestoryModelMixin(删除)
+    - destory(request, *args, **kwargs)
+
+- ViewSet
+    - 将一系列操作打包，放入一个类中
+    - list:GET
+    - retrieve:GET+id
+    - destory:DELETE
+    - update:UPDATE
+    - create:POST

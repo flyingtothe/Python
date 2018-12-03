@@ -6,7 +6,7 @@ from MySer.models import Student
 
 # class StudentSer(serializers.Serializer):
 # 超链接版
-class StudentSer(serializers.HyperlinkedModelSerializer):
+class StudentSer(serializers.ModelSerializer):
     '''
     包含每一个需要序列化/反序列化的字段
     与定义模型基本一致

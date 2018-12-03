@@ -20,10 +20,12 @@ from MySer import views
 # 导入 drf 路由
 from rest_framework import routers
 
-router = routers.SimpleRouter()
+router = routers.DefaultRouter()
 router.register('student', views.StudentVS, base_name='stu')
+# router.register('apiview/', views.StudentAPIView.as_view(), base_name='stuapi')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
+    # path('api/', include(router.urls)),
+    path('api/', views.StudentViewSet.as_view()),
 ]
