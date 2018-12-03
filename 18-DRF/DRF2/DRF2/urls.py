@@ -21,11 +21,12 @@ from MySer import views
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register('student', views.StudentVS, base_name='stu')
+# router.register('student', views.StudentVS, base_name='stu')
 # router.register('apiview/', views.StudentAPIView.as_view(), base_name='stuapi')
+router.register('', views.StudentViewSet, base_name='stu')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('api/', include(router.urls)),
-    path('api/', views.StudentViewSet.as_view()),
+    path('api/', include(router.urls)),
+    # path('api/', views.StudentAPIView.as_view()),
 ]

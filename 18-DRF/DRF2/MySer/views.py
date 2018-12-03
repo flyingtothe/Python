@@ -38,3 +38,8 @@ class StudentGenAPIView(GenericAPIView):
 class StudentViewSet(ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSer
+
+    def list(self, request, *args, **kwargs):
+       print('ssss')
+       rst =  super(StudentViewSet, self).list(request,*args, **kwargs)
+       return rst
